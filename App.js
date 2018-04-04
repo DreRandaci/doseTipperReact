@@ -10,7 +10,6 @@ export default class App extends React.Component {
     return (
       <View style={styles.container}>
         <Text style={styles.heading}>Dose Tipper</Text>
-        <TextInput />
       </View>
     );
   }
