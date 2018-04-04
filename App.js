@@ -16,12 +16,13 @@ export default class App extends React.Component {
     this.state = {
       enteredTips: 0,
       calculatedTips: '',
+      hours: 0,
       allShifts: [
-        {shift: '6am - 1pm'},
-        {shift: '7am - 1pm'},
-        {shift: '1pm - 7pm'},
+        {shift: '6am - 1pm', hours: 7},
+        {shift: '7am - 1pm', hours: 6},
+        {shift: '1pm - 7pm', hours: 6},
       ],
-      selectedShift: [],
+      selectedShift: {},
       baristaTips: '',
       cashierTips: '',
       barbackTips: '',
@@ -38,7 +39,11 @@ export default class App extends React.Component {
   }
   
   calculateTips() {
-
+    if(this.state.enteredTips > 0 && this.state.selectedShift.hours > 0) {
+      let kitchenTipsPerHr = this.state.enteredTips*0.2.toFixed(2)/this.state.selectedShift.hours;
+      let k1Tips = 0;
+      this.setState({baristaTips: kitchenTipsPerHr})
+    }
   }
 
   render() {
@@ -75,25 +80,25 @@ export default class App extends React.Component {
           value={this.state.enteredTips}/>
         </View>
 
-        <Text>{this.state.selectedShift.shift}</Text>
         
-        <Text>{this.state.enteredTips}</Text>
+        <Text style={{color: 'red'}}>Shift: {this.state.selectedShift.shift}</Text>
+        <Text style={{color: 'red'}}>Shift Hours: {this.state.selectedShift.hours}</Text>
+        
         
         <Button
-          onPress={this.calculateTips}
+          onPress={this.calculateTips.bind(this)}
           title="Get Tips"
           color="blue"
-          accessibilityLabel="Learn more about this purple button"
         />
 
-        <View style={{display: this.state.calculatedTips === '' ? 'none' : ''}}>
-          <Text>Barista: </Text>
-          <Text>Cashier: </Text>
-          <Text>Barback: </Text>
-          <Text>K1: </Text>
-          <Text>K2: </Text>
-          <Text>K3: </Text>
-        </View>
+        <View>
+          <Text>Barista: {this.state.baristaTips}</Text>
+          <Text>Cashier: {this.state.cashierTips}</Text>
+          <Text>Barback: {this.state.barbackTips}</Text>
+          <Text>K1: {this.state.k1Tips}</Text>
+          <Text>K2: {this.state.k2Tips}</Text>
+          <Text>K3: {this.state.k3Tips}</Text>
+      </View>
       </View>
     );
   }
