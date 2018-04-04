@@ -36,13 +36,31 @@ export default class App extends React.Component {
     this.setState({
       selectedShift: shift
     }); 
-  }
-  
+  }  
+
   calculateTips() {
     if(this.state.enteredTips > 0 && this.state.selectedShift.hours > 0) {
-      let kitchenTipsPerHr = this.state.enteredTips*0.2.toFixed(2)/this.state.selectedShift.hours;
-      let k1Tips = 0;
-      this.setState({baristaTips: kitchenTipsPerHr})
+      
+      let enteredTips = Math.round(this.state.enteredTips);
+      let kitchenTips = Math.round(this.state.enteredTips*0.2);
+      let barTips = (enteredTips-(kitchenTips))/2;
+      let cashTips = (enteredTips-(kitchenTips))/2;
+      let kitchenTipsPerHr = kitchenTips/this.state.selectedShift.hours;
+      let k1Tips = this.state.selectedShift.hours === 7 ? kitchenTipsPerHr*3/2 : kitchenTipsPerHr*2/2;
+      let k2Tips = this.state.selectedShift.hours === 7 ? kitchenTipsPerHr*3/2 : kitchenTipsPerHr*2/2;
+      let k1k2k3AverageTipsAfterFirstPayout = kitchenTipsPerHr*4/3;
+      let k3Tips = k1k2k3AverageTipsAfterFirstPayout;
+      k1Tips+=k1k2k3AverageTipsAfterFirstPayout; 
+      k2Tips+=k1k2k3AverageTipsAfterFirstPayout; 
+
+      this.setState({
+        baristaTips: barTips, 
+        cashierTips: cashTips, 
+        // barbackTips: bbTips, 
+        k1Tips: k1Tips,
+        k2Tips: k2Tips,
+        k3Tips: k3Tips,
+      });
     }
   }
 
