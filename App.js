@@ -9,12 +9,14 @@ import {
     Picker,
     Modal,
     TouchableOpacity, } from 'react-native';
+import { CheckBox } from 'react-native-elements';
 
 export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      enteredTips: 0,
+      barBackChecked: false,
+      enteredTips: '',
       calculatedTips: '',
       hours: 0,
       allShifts: [
@@ -32,6 +34,10 @@ export default class App extends React.Component {
     };
   }
   
+  toggleBarback() {
+    this.setState({barBackChecked: !this.state.barBackChecked})
+  }
+
   selectShift(shift) { 
     this.setState({
       selectedShift: shift
@@ -39,10 +45,9 @@ export default class App extends React.Component {
   }  
 
   calculateTips() {
-    if(this.state.enteredTips > 0 && this.state.selectedShift.hours > 0) {
-      
-      let enteredTips = Math.round(this.state.enteredTips);
-      let kitchenTips = Math.round(this.state.enteredTips*0.2);
+    if(this.state.enteredTips > 0 && this.state.selectedShift.hours > 0) {      
+      let enteredTips = this.state.enteredTips;
+      let kitchenTips = this.state.enteredTips*0.2;
       let barTips = (enteredTips-(kitchenTips))/2;
       let cashTips = (enteredTips-(kitchenTips))/2;
       let kitchenTipsPerHr = kitchenTips/this.state.selectedShift.hours;
@@ -65,15 +70,41 @@ export default class App extends React.Component {
   }
 
   render() {
+
+    setSelectedOption = (selectedOption) =>
+      this.setState({
+        selectedOption
+      });    
+
     return (
       <View style={styles.container}>
         
         <Text style={styles.heading}>Dose Tipper</Text>        
         
+        <View>
+          <TextInput
+          placeholder={'Enter Total Tips'}
+          clearTextOnFocus={true}          
+          style={styles.enterTips} 
+          maxLength={40}
+          onChangeText={(tips) => this.setState({enteredTips: tips})}
+          value={this.state.enteredTips}/>
+        </View>
+
         <Text style={styles.shifts}>Select Shift</Text>
         
-        <View style={{height: 100}}>
+        <CheckBox
+          center
+          title='6am - 1pm'
+          iconRight
+          iconType='material'
+          checkedIcon='clear'
+          uncheckedIcon='add'
+          checkedColor='red'
+          checked={this.state.checked}
+        />
 
+        <View style={{height: 100}}>        
         <FlatList
           style={styles.listContainer}
           data={this.state.allShifts}
@@ -87,26 +118,25 @@ export default class App extends React.Component {
             </TouchableOpacity>}
         />        
         </View>
-
-        <View>
-          <TextInput
-          placeholder={'Enter Total Tips'}
-          clearTextOnFocus={true}          
-          style={styles.enterTips} 
-          maxLength={40}
-          onChangeText={(tips) => this.setState({enteredTips: tips})}
-          value={this.state.enteredTips}/>
-        </View>
-
         
         <Text style={{color: 'red'}}>Shift: {this.state.selectedShift.shift}</Text>
-        <Text style={{color: 'red'}}>Shift Hours: {this.state.selectedShift.hours}</Text>
+        <Text style={{color: 'red'}}>Shift Hours: {this.state.selectedShift.hours}</Text>        
         
-        
+        <CheckBox
+          onPress={ this.toggleBarback.bind(this) }
+          iconRight
+          center
+          title='Barback'
+          checkedIcon='dot-circle-o'
+          uncheckedIcon='circle-o'
+          checked={this.state.barBackChecked}
+        />
+
         <Button
           onPress={this.calculateTips.bind(this)}
-          title="Get Tips"
-          color="blue"
+          title='Get Tips'
+          color='gold'
+          backgroundColor='black'
         />
 
         <View>
