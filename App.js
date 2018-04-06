@@ -9,7 +9,7 @@ import {
     Picker,
     Modal,
     TouchableOpacity, } from 'react-native';
-import { CheckBox } from 'react-native-elements';
+import { CheckBox, Divider } from 'react-native-elements';
 
 export default class App extends React.Component {
     constructor(props) {
@@ -106,32 +106,33 @@ export default class App extends React.Component {
       <View style={styles.container}>
         
         <Text style={styles.heading}>Dose Tipper</Text>        
-        
         <View>
           <TextInput
           placeholder={'Enter Total Tips'}
           clearTextOnFocus={true}          
           style={styles.enterTips} 
+          fontSize={20}
           maxLength={40}
           onChangeText={(tips) => this.setState({enteredTips: tips})}
           value={this.state.enteredTips}/>
+          
         </View>
 
         <Text style={styles.shifts}>Select Shift</Text>      
 
-        <View style={{height: 100}}>        
-        <FlatList
-          style={styles.listContainer}
-          data={this.state.allShifts}
-          keyExtractor={item => item.shift}
-          renderItem={({item, index}) => 
-            <TouchableOpacity
-            onPress={this.selectShift.bind(this, item)}
-            >
-              <Text>{item.shift}
-              </Text>
-            </TouchableOpacity>}
-        />        
+        <View style={styles.listContainer}>        
+          <FlatList
+            style={styles.flatList}
+            data={this.state.allShifts}
+            keyExtractor={item => item.shift}
+            renderItem={({item, index}) => 
+              <TouchableOpacity
+              onPress={this.selectShift.bind(this, item)}
+              >
+                <Text style={styles.listShift}>{item.shift}
+                </Text>
+              </TouchableOpacity>}
+          />        
         </View>
         
         <Text style={{color: 'red'}}>Shift: {this.state.selectedShift.shift}</Text>
@@ -170,22 +171,31 @@ export default class App extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#70a9ca9e',
     alignItems: 'center',
+    justifyContent: 'center'
   },
   heading: {
     marginTop: 50,
-    fontSize: 40,    
+    fontSize: 50,
+    fontWeight: 'bold',
+    color: '#fff'    
   },
   listContainer: {
-    
+    height: 200
+  },
+  flatList: {
+    padding: 5,
   },
   shifts: {
-    marginTop: 20,
-    fontSize: 20,
+    marginTop: 10,
+    fontSize: 25,
+  },
+  listShift: {
+    fontSize: 20
   },
   enterTips: {
-    
+    padding: 20,    
   }
 });
 
