@@ -50,10 +50,8 @@ export default class App extends React.Component {
     calculateKitchTips = (kitchenTipsPerHr, hrs) => 
       hrs === 7 ? kitchenTipsPerHr*3/2 : kitchenTipsPerHr*2/2;
 
-
-    calculate2HrTips() {
-
-    }
+    
+    // TODO: Add calculate2HrTips() 
 
     calculateTips() {
       if(this.state.enteredTips > 0 && this.state.selectedShift.hours > 0) {
@@ -67,7 +65,7 @@ export default class App extends React.Component {
         if(this.state.barBackChecked) {
           bbTips = enteredTips*0.2;
           enteredTips -= bbTips;
-        }
+        }        
 
         // Calculates barista and cashier tips
         let baristaTips = this.calculateBarTips(enteredTips, kitchenTips);
@@ -119,18 +117,7 @@ export default class App extends React.Component {
           value={this.state.enteredTips}/>
         </View>
 
-        <Text style={styles.shifts}>Select Shift</Text>
-        
-        {/* <CheckBox
-          center
-          title='6am - 1pm'
-          iconRight
-          iconType='material'
-          checkedIcon='clear'
-          uncheckedIcon='add'
-          checkedColor='red'
-          checked={this.state.checked}
-        /> */}
+        <Text style={styles.shifts}>Select Shift</Text>      
 
         <View style={{height: 100}}>        
         <FlatList
@@ -161,7 +148,7 @@ export default class App extends React.Component {
         />
 
         <Button
-          onPress={this.state.selectedShift.hours === 2 ? this.calculate2HrTips.bind(this) : this.calculateTips.bind(this)}
+          onPress={this.calculateTips.bind(this)}
           title='Calculate Tips'
           color='gold'
           backgroundColor='black'
