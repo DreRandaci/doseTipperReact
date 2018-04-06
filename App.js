@@ -12,90 +12,95 @@ import {
 import { CheckBox } from 'react-native-elements';
 
 export default class App extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      showTips: false,
-      barBackChecked: false,
-      enteredTips: '',
-      calculatedTips: '',
-      allShifts: [
-        {shift: '6am - 1pm', hours: 7},
-        {shift: '7am - 1pm', hours: 6},
-        {shift: '1pm - 7pm', hours: 6},
-        {shift: '1pm - 3pm', hours: 2}
-      ],
-      selectedShift: {},
-      baristaTips: '',
-      cashierTips: '',
-      barbackTips: '',
-      k1Tips: '',
-      k2Tips: '',
-      k3Tips: '',
-    };
-  }
-  
-  toggleBarback() {
-    this.setState({barBackChecked: !this.state.barBackChecked})
-  }
-
-  selectShift(shift) { 
-    this.setState({
-      selectedShift: shift
-    }); 
-  }  
-
-  calculateBarTips = (enteredTips, kitchenTips) => (enteredTips-kitchenTips)/2;
-
-  calculateKitchTips = (kitchenTipsPerHr, hrs) => 
-    hrs === 7 ? kitchenTipsPerHr*3/2 : kitchenTipsPerHr*2/2;
-
-  calculateTips() {
-    if(this.state.enteredTips > 0 && this.state.selectedShift.hours > 0) {
-      // Initializing variables
-      let bbTips;
-      let shiftHrs = this.state.selectedShift.hours;
-      let enteredTips = this.state.enteredTips;
-      let kitchenTips = this.state.enteredTips*0.2;
-      
-      // Calculates bar back tips 
-      if(this.state.barBackChecked) {
-        bbTips = enteredTips*0.2;
-        enteredTips -= bbTips;
-      }
-
-      // Calculates barista and cashier tips
-      let baristaTips = this.calculateBarTips(enteredTips, kitchenTips);
-      let cashierTips = this.calculateBarTips(enteredTips, kitchenTips);
-
-      // Calculates average kitchen tips per hour
-      let kitchenTipsPerHr = kitchenTips/shiftHrs;
-      
-      // Calculates K1 and K2 tips before 9am
-      let k1Tips = this.calculateKitchTips(kitchenTipsPerHr, shiftHrs);
-      let k2Tips = this.calculateKitchTips(kitchenTipsPerHr, shiftHrs);
-      
-      // Calculates tips from 9am-1pm
-      let averageTipsAfterFirstPayout = kitchenTipsPerHr*4/3;
-
-      // Calculates tips for K3 
-      let k3Tips = averageTipsAfterFirstPayout;
-
-      // Adds remaining tips to K1 and K2 from 9am-1pm block
-      k1Tips+=averageTipsAfterFirstPayout; 
-      k2Tips+=averageTipsAfterFirstPayout; 
-
-      this.setState({
-        showTips: true,
-        baristaTips: baristaTips, 
-        cashierTips: cashierTips, 
-        barbackTips: bbTips, 
-        k1Tips: k1Tips,
-        k2Tips: k2Tips,
-        k3Tips: k3Tips,
-      });
+    constructor(props) {
+      super(props);
+      this.state = {
+        showTips: false,
+        barBackChecked: false,
+        enteredTips: '',
+        calculatedTips: '',
+        allShifts: [
+          {shift: '6am - 1pm', hours: 7},
+          {shift: '7am - 1pm', hours: 6},
+          {shift: '1pm - 7pm', hours: 6},
+          {shift: '1pm - 3pm', hours: 2}
+        ],
+        selectedShift: [{}],
+        baristaTips: '',
+        cashierTips: '',
+        barbackTips: '',
+        k1Tips: '',
+        k2Tips: '',
+        k3Tips: '',
+      };
     }
-  }
+  
+    toggleBarback = () => 
+      this.setState({barBackChecked: !this.state.barBackChecked});
+
+    selectShift = (shift) =>  
+      this.setState({
+        selectedShift: shift
+      }); 
+
+    // Calculates barista and cashier tips 
+    calculateBarTips = (enteredTips, kitchenTips) => (enteredTips-kitchenTips)/2;
+
+    // Calculates K1 and K2 tips before 9am
+    calculateKitchTips = (kitchenTipsPerHr, hrs) => 
+      hrs === 7 ? kitchenTipsPerHr*3/2 : kitchenTipsPerHr*2/2;
+
+
+    calculate2HrTips() {
+
+    }
+
+    calculateTips() {
+      if(this.state.enteredTips > 0 && this.state.selectedShift.hours > 0) {
+        // Initialized variables
+        let bbTips;
+        let shiftHrs = this.state.selectedShift.hours;
+        let enteredTips = this.state.enteredTips;
+        let kitchenTips = this.state.enteredTips*0.2;
+        
+        // Calculates bar back tips 
+        if(this.state.barBackChecked) {
+          bbTips = enteredTips*0.2;
+          enteredTips -= bbTips;
+        }
+
+        // Calculates barista and cashier tips
+        let baristaTips = this.calculateBarTips(enteredTips, kitchenTips);
+        let cashierTips = this.calculateBarTips(enteredTips, kitchenTips);
+
+        // Calculates average kitchen tips per hour
+        let kitchenTipsPerHr = kitchenTips/shiftHrs;
+        
+        // Calculates K1 and K2 tips before 9am
+        let k1Tips = this.calculateKitchTips(kitchenTipsPerHr, shiftHrs);
+        let k2Tips = this.calculateKitchTips(kitchenTipsPerHr, shiftHrs);
+        
+        // Calculates tips from 9am-1pm
+        let averageTipsAfterFirstPayout = kitchenTipsPerHr*4/3;
+
+        // Calculates tips for K3 
+        let k3Tips = averageTipsAfterFirstPayout;
+
+        // Adds remaining tips to K1 and K2 from 9am-1pm block
+        k1Tips+=averageTipsAfterFirstPayout; 
+        k2Tips+=averageTipsAfterFirstPayout; 
+
+        this.setState({
+          showTips: true,
+          baristaTips: baristaTips, 
+          cashierTips: cashierTips, 
+          barbackTips: bbTips, 
+          k1Tips: k1Tips,
+          k2Tips: k2Tips,
+          k3Tips: k3Tips,
+        });
+      }
+    }
 
   render() {
 
@@ -156,11 +161,12 @@ export default class App extends React.Component {
         />
 
         <Button
-          onPress={this.calculateTips.bind(this)}
-          title='Get Tips'
+          onPress={this.state.selectedShift.hours === 2 ? this.calculate2HrTips.bind(this) : this.calculateTips.bind(this)}
+          title='Calculate Tips'
           color='gold'
           backgroundColor='black'
         />
+
         <View style={{display: this.state.showTips ? '' : 'none'}}>
           <Text>Barista: {this.state.baristaTips}</Text>
           <Text>Cashier: {this.state.cashierTips}</Text>
