@@ -46,29 +46,44 @@ export default class App extends React.Component {
   }  
 
   calculateBarTips = (enteredTips, kitchenTips) => (enteredTips-kitchenTips)/2;
-  calculateKitchTips = (kitchenTipsPerHr) => 
-    this.state.selectedShift.hours === 7 ? kitchenTipsPerHr*3/2 : kitchenTipsPerHr*2/2;
+
+  calculateKitchTips = (kitchenTipsPerHr, hrs) => 
+    hrs === 7 ? kitchenTipsPerHr*3/2 : kitchenTipsPerHr*2/2;
 
   calculateTips() {
     if(this.state.enteredTips > 0 && this.state.selectedShift.hours > 0) {
+      // Initializing variables
       let bbTips;
+      let shiftHrs = this.state.selectedShift.hours;
       let enteredTips = this.state.enteredTips;
       let kitchenTips = this.state.enteredTips*0.2;
       
+      // Calculates bar back tips 
       if(this.state.barBackChecked) {
         bbTips = enteredTips*0.2;
         enteredTips -= bbTips;
       }
 
+      // Calculates barista and cashier tips
       let baristaTips = this.calculateBarTips(enteredTips, kitchenTips);
       let cashierTips = this.calculateBarTips(enteredTips, kitchenTips);
-      let kitchenTipsPerHr = kitchenTips/this.state.selectedShift.hours;
-      let k1Tips = this.calculateKitchTips(kitchenTipsPerHr);
-      let k2Tips = this.calculateKitchTips(kitchenTipsPerHr);
-      let k1k2k3AverageTipsAfterFirstPayout = kitchenTipsPerHr*4/3;
-      let k3Tips = k1k2k3AverageTipsAfterFirstPayout;
-      k1Tips+=k1k2k3AverageTipsAfterFirstPayout; 
-      k2Tips+=k1k2k3AverageTipsAfterFirstPayout; 
+
+      // Calculates average kitchen tips per hour
+      let kitchenTipsPerHr = kitchenTips/shiftHrs;
+      
+      // Calculates K1 and K2 tips before 9am
+      let k1Tips = this.calculateKitchTips(kitchenTipsPerHr, shiftHrs);
+      let k2Tips = this.calculateKitchTips(kitchenTipsPerHr, shiftHrs);
+      
+      // Calculates tips from 9am-1pm
+      let averageTipsAfterFirstPayout = kitchenTipsPerHr*4/3;
+
+      // Calculates tips for K3 
+      let k3Tips = averageTipsAfterFirstPayout;
+
+      // Adds remaining tips to K1 and K2 from 9am-1pm block
+      k1Tips+=averageTipsAfterFirstPayout; 
+      k2Tips+=averageTipsAfterFirstPayout; 
 
       this.setState({
         showTips: true,
@@ -83,11 +98,6 @@ export default class App extends React.Component {
   }
 
   render() {
-
-    setSelectedOption = (selectedOption) =>
-      this.setState({
-        selectedOption
-      });    
 
     return (
       <View style={styles.container}>
