@@ -1,6 +1,5 @@
 import React from 'react';
 import { 
-    Button,
     StyleSheet, 
     Text, 
     View,
@@ -9,7 +8,8 @@ import {
     Picker,
     Modal,
     TouchableOpacity, } from 'react-native';
-import { CheckBox, Divider } from 'react-native-elements';
+import { Button, CheckBox, Divider } from 'react-native-elements';
+import { Col, Row, Grid } from 'react-native-easy-grid';
 
 export default class App extends React.Component {
     constructor(props) {
@@ -103,9 +103,21 @@ export default class App extends React.Component {
   render() {
 
     return (
+      // <View style={styles.container}>
       <View style={styles.container}>
         
-        <Text style={styles.heading}>Dose Tipper</Text>        
+        <Text style={styles.heading}>Dose Tipper</Text>
+
+
+        <Grid>
+            <Col style={{ width: 40 }}>
+                <Text>Fixed width</Text>
+            </Col>
+            <Col>
+                <Text>Fluid width</Text>
+            </Col>
+        </Grid>
+
         <View>
           <TextInput
           placeholder={'Enter Total Tips'}
@@ -126,33 +138,48 @@ export default class App extends React.Component {
             data={this.state.allShifts}
             keyExtractor={item => item.shift}
             renderItem={({item, index}) => 
-              <TouchableOpacity
-              onPress={this.selectShift.bind(this, item)}
-              >
-                <Text style={styles.listShift}>{item.shift}
-                </Text>
-              </TouchableOpacity>}
+              
+              <CheckBox
+                key={index}
+                onPress={this.selectShift.bind(this, item)}
+                iconRight
+                center
+                title={item.shift}
+                checkedIcon='dot-circle-o'
+                uncheckedIcon='circle-o'
+                checked={this.state.barBackChecked}
+              />
+
+              // <TouchableOpacity
+              // onPress={this.selectShift.bind(this, item)}
+              // >
+              //   <Text style={styles.listShift}>{item.shift}
+              //   </Text>
+              // </TouchableOpacity>
+              }
+              
           />        
         </View>
         
-        <Text style={{color: 'red'}}>Shift: {this.state.selectedShift.shift}</Text>
-        <Text style={{color: 'red'}}>Shift Hours: {this.state.selectedShift.hours}</Text>        
+        {/* <Text style={{color: 'red'}}>Shift: {this.state.selectedShift.shift}</Text>
+        <Text style={{color: 'red'}}>Shift Hours: {this.state.selectedShift.hours}</Text>         */}
         
         <CheckBox
           onPress={ this.toggleBarback.bind(this) }
           iconRight
           center
-          title='Barback'
-          checkedIcon='dot-circle-o'
+          title='Barback     '
+          checkedIcon='check'
           uncheckedIcon='circle-o'
           checked={this.state.barBackChecked}
         />
 
         <Button
           onPress={this.calculateTips.bind(this)}
+          raised
           title='Calculate Tips'
-          color='gold'
-          backgroundColor='black'
+          color='#fff'
+          backgroundColor='#70a9ca9e'
         />
 
         <View style={{display: this.state.showTips ? '' : 'none'}}>
@@ -169,20 +196,26 @@ export default class App extends React.Component {
 }
 
 const styles = StyleSheet.create({
+  // container: {
+  //   flex: 1,
+  //   backgroundColor: '#70a9ca9e',
+  //   alignItems: 'center',
+  //   justifyContent: 'center'
+  // },
   container: {
-    flex: 1,
+    // flex: 1,
     backgroundColor: '#70a9ca9e',
-    alignItems: 'center',
-    justifyContent: 'center'
+    // alignItems: 'center',
+    // justifyContent: 'center'
   },
   heading: {
-    marginTop: 50,
     fontSize: 50,
     fontWeight: 'bold',
     color: '#fff'    
   },
   listContainer: {
-    height: 200
+    height: 230,
+    flexDirection: 'row',
   },
   flatList: {
     padding: 5,
