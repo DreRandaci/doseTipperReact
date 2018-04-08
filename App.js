@@ -38,20 +38,21 @@ export default class App extends React.Component {
     toggleBarback = () => 
       this.setState({barBackChecked: !this.state.barBackChecked});
 
-    selectShift = (shift, index) => {
-      shift.checked = !shift.checked;
+    selectShift = (shift) => {
+      shift.item.checked = !shift.item.checked;
       // loop over your state data and create newStateArray 
       let newShifts = this.state.allShifts.map((val,i) => {
-        if (index === i) {
+        if (shift.index === i) {
             // change selected value of pressed entry
-            return { ...val, selected: !val.checked }; 
+            return { ...val }; 
         }
         //otherwise just return current value
+        val.checked = false;
         return val;
-    });
+      });
       this.setState({        
         allShifts: newShifts,
-        selectedShift: shift                
+        selectedShift: shift.item                
       })
     }; 
 
@@ -101,13 +102,14 @@ export default class App extends React.Component {
       }
     }
 
-    renderShifts = ({ item }, index) =>
+    renderShifts = (item) =>
         <CheckBox
-          checked={item === this.state.selectedShift}
-          onPress={this.selectShift.bind(this, item, index)}
+          checked={item.item.checked}
+          onPress={this.selectShift.bind(this, item)}
           iconRight
           center
-          title={item.shift}
+          checkedColor='gold'
+          title={item.item.shift}
           checkedIcon='check'
           uncheckedIcon='circle-o'          
         />;
@@ -138,7 +140,7 @@ export default class App extends React.Component {
             style={styles.flatList}
             data={this.state.allShifts}
             keyExtractor={(item, index) => index}
-            renderItem={this.renderShifts}
+            renderItem={(item) => this.renderShifts(item)}
           />
         </View>
         
@@ -149,6 +151,7 @@ export default class App extends React.Component {
           onPress={ this.toggleBarback.bind(this) }
           iconRight
           center
+          checkedColor='gold'
           title='Barback     '
           checkedIcon='check'
           uncheckedIcon='circle-o'
