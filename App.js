@@ -16,16 +16,16 @@ export default class App extends React.Component {
       super(props);
       this.state = {
         showTips: false,
-        barBackChecked: false,
+        barBackChecked: false,        
         enteredTips: '',
         calculatedTips: '',
         allShifts: [
-          {shift: '6am - 1pm', hours: 7},
-          {shift: '7am - 1pm', hours: 6},
-          {shift: '1pm - 7pm', hours: 6},
-          {shift: '1pm - 3pm', hours: 2}
+          {shift: '6am - 1pm', hours: 7, checked: false},
+          {shift: '7am - 1pm', hours: 6, checked: false},
+          {shift: '1pm - 7pm', hours: 6, checked: false},
+          {shift: '1pm - 3pm', hours: 2, checked: false}
         ],
-        selectedShift: [{}],
+        selectedShift: [],
         baristaTips: '',
         cashierTips: '',
         barbackTips: '',
@@ -38,19 +38,23 @@ export default class App extends React.Component {
     toggleBarback = () => 
       this.setState({barBackChecked: !this.state.barBackChecked});
 
-    selectShift = (shift) =>  
-      this.setState({
-        selectedShift: shift
-      }); 
+    selectShift = (shift, index) => {
+      shift.checked = !shift.checked;
+      // loop over your state data and create newStateArray 
+      let newShifts = this.state.allShifts.map((val,i) => {
+        if (index === i) {
+            // change selected value of pressed entry
+            return { ...val, selected: !val.checked }; 
+        }
+        //otherwise just return current value
+        return val;
+    });
+      this.setState({        
+        allShifts: newShifts,
+        selectedShift: shift                
+      })
+    }; 
 
-    // Calculates barista and cashier tips 
-    calculateBarTips = (enteredTips, kitchenTips) => (enteredTips-kitchenTips)/2;
-
-    // Calculates K1 and K2 tips before 9am
-    calculateKitchTips = (kitchenTipsPerHr, hrs) => 
-      hrs === 7 ? kitchenTipsPerHr*3/2 : kitchenTipsPerHr*2/2;
-
-    
     // TODO: Add calculate2HrTips() 
 
     calculateTips() {
@@ -68,15 +72,13 @@ export default class App extends React.Component {
         }        
 
         // Calculates barista and cashier tips
-        let baristaTips = this.calculateBarTips(enteredTips, kitchenTips);
-        let cashierTips = this.calculateBarTips(enteredTips, kitchenTips);
+        let bariAndCashiTips = (enteredTips-kitchenTips)/2;
 
         // Calculates average kitchen tips per hour
         let kitchenTipsPerHr = kitchenTips/shiftHrs;
         
         // Calculates K1 and K2 tips before 9am
-        let k1Tips = this.calculateKitchTips(kitchenTipsPerHr, shiftHrs);
-        let k2Tips = this.calculateKitchTips(kitchenTipsPerHr, shiftHrs);
+        let k1k2Tips = hrs === 7 ? kitchenTipsPerHr*3/2 : kitchenTipsPerHr*2/2;
         
         // Calculates tips from 9am-1pm
         let averageTipsAfterFirstPayout = kitchenTipsPerHr*4/3;
@@ -85,38 +87,37 @@ export default class App extends React.Component {
         let k3Tips = averageTipsAfterFirstPayout;
 
         // Adds remaining tips to K1 and K2 from 9am-1pm block
-        k1Tips+=averageTipsAfterFirstPayout; 
-        k2Tips+=averageTipsAfterFirstPayout; 
+        k1k2Tips+=averageTipsAfterFirstPayout; 
 
         this.setState({
           showTips: true,
-          baristaTips: baristaTips, 
-          cashierTips: cashierTips, 
+          baristaTips: bariAndCashiTips, 
+          cashierTips: bariAndCashiTips, 
           barbackTips: bbTips, 
-          k1Tips: k1Tips,
-          k2Tips: k2Tips,
+          k1Tips: k1k2Tips,
+          k2Tips: k1k2Tips,
           k3Tips: k3Tips,
         });
       }
     }
 
+    renderShifts = ({ item }, index) =>
+        <CheckBox
+          checked={item === this.state.selectedShift}
+          onPress={this.selectShift.bind(this, item, index)}
+          iconRight
+          center
+          title={item.shift}
+          checkedIcon='check'
+          uncheckedIcon='circle-o'          
+        />;
+
   render() {
 
     return (
-      // <View style={styles.container}>
       <View style={styles.container}>
         
         <Text style={styles.heading}>Dose Tipper</Text>
-
-
-        <Grid>
-            <Col style={{ width: 40 }}>
-                <Text>Fixed width</Text>
-            </Col>
-            <Col>
-                <Text>Fluid width</Text>
-            </Col>
-        </Grid>
 
         <View>
           <TextInput
@@ -136,33 +137,13 @@ export default class App extends React.Component {
           <FlatList
             style={styles.flatList}
             data={this.state.allShifts}
-            keyExtractor={item => item.shift}
-            renderItem={({item, index}) => 
-              
-              <CheckBox
-                key={index}
-                onPress={this.selectShift.bind(this, item)}
-                iconRight
-                center
-                title={item.shift}
-                checkedIcon='dot-circle-o'
-                uncheckedIcon='circle-o'
-                checked={this.state.barBackChecked}
-              />
-
-              // <TouchableOpacity
-              // onPress={this.selectShift.bind(this, item)}
-              // >
-              //   <Text style={styles.listShift}>{item.shift}
-              //   </Text>
-              // </TouchableOpacity>
-              }
-              
-          />        
+            keyExtractor={(item, index) => index}
+            renderItem={this.renderShifts}
+          />
         </View>
         
-        {/* <Text style={{color: 'red'}}>Shift: {this.state.selectedShift.shift}</Text>
-        <Text style={{color: 'red'}}>Shift Hours: {this.state.selectedShift.hours}</Text>         */}
+        <Text style={{color: 'red'}}>Shift: {this.state.selectedShift.shift}</Text>
+        <Text style={{color: 'red'}}>Shift Hours: {this.state.selectedShift.hours}</Text>        
         
         <CheckBox
           onPress={ this.toggleBarback.bind(this) }
@@ -196,22 +177,22 @@ export default class App extends React.Component {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#70a9ca9e',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
   // container: {
   //   flex: 1,
   //   backgroundColor: '#70a9ca9e',
   //   alignItems: 'center',
   //   justifyContent: 'center'
   // },
-  container: {
-    // flex: 1,
-    backgroundColor: '#70a9ca9e',
-    // alignItems: 'center',
-    // justifyContent: 'center'
-  },
   heading: {
     fontSize: 50,
     fontWeight: 'bold',
-    color: '#fff'    
+    color: '#fff',    
   },
   listContainer: {
     height: 230,
