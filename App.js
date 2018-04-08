@@ -8,7 +8,7 @@ import {
     Picker,
     Modal,
     TouchableOpacity, } from 'react-native';
-import { Button, CheckBox, Divider } from 'react-native-elements';
+import { Button, CheckBox, List, ListItem } from 'react-native-elements';
 import { Col, Row, Grid } from 'react-native-easy-grid';
 
 export default class App extends React.Component {
@@ -20,12 +20,20 @@ export default class App extends React.Component {
         enteredTips: '',
         calculatedTips: '',
         allShifts: [
-          {shift: '6am - 1pm', hours: 7, checked: false},
+          {shift: '6am - 1pm', hours: 7, checked: true},
           {shift: '7am - 1pm', hours: 6, checked: false},
           {shift: '1pm - 3pm', hours: 2, checked: false},
           {shift: '1pm - 7pm', hours: 6, checked: false},
         ],
-        selectedShift: [],
+        employees: [
+          {emp: 'Barista', tips: ''},
+          {emp: 'Cashier', tips: ''},
+          {emp: 'Barback', tips: ''},
+          {emp: 'K1', tips: ''},
+          {emp: 'K2', tips: ''},
+          {emp: 'K3', tips: ''},
+        ],
+        selectedShift: {shift: '6am - 1pm', hours: 7, checked: true},
         baristaTips: '',
         cashierTips: '',
         barbackTips: '',
@@ -42,7 +50,8 @@ export default class App extends React.Component {
         {shift: '7am - 1pm', hours: 6, checked: false},
         {shift: '1pm - 7pm', hours: 6, checked: false},
         {shift: '1pm - 3pm', hours: 2, checked: false}
-      ]; 
+      ];
+      this.initialState.selectedShift = {}; 
       this.setState(this.initialState);
     };
   
@@ -115,6 +124,7 @@ export default class App extends React.Component {
 
     renderShifts = (item) =>
         <CheckBox
+          size={30}
           checked={item.item.checked}
           onPress={this.selectShift.bind(this, item)}
           iconRight
@@ -136,13 +146,15 @@ export default class App extends React.Component {
           <Col style={styles.leftCol}>
             <View>
               <TextInput
-              placeholder={'Enter Total Tips'}
-              clearTextOnFocus={true}          
-              style={styles.enterTips} 
-              fontSize={20}
-              maxLength={40}
-              onChangeText={(tips) => this.setState({enteredTips: tips})}
-              value={this.state.enteredTips}/>
+                keyboardType={'number-pad'}
+                autoFocus={true}
+                placeholder={'Enter Total Tips'}
+                clearTextOnFocus={true}          
+                style={styles.enterTips} 
+                fontSize={20}
+                maxLength={40}
+                onChangeText={(tips) => this.setState({enteredTips: tips})}
+                value={this.state.enteredTips}/>
               
             </View>
 
@@ -170,34 +182,55 @@ export default class App extends React.Component {
             </View>
           </Col>
 
-          <Col>
-            <Text style={{color: 'red'}}>Shift: {this.state.selectedShift.shift}</Text>
-            <Text style={{color: 'red'}}>Shift Hours: {this.state.selectedShift.hours}</Text>        
+          <Col style={styles.rightCol}>
+            <Row>
+              <View>
+                <Text style={styles.shiftInfo}>Shift: {this.state.selectedShift.shift}</Text>
+                <Text style={styles.shiftInfo}>Shift Hours: {this.state.selectedShift.hours}</Text>        
+              </View>
+            </Row>
 
-            <View style={{display: this.state.showTips ? '' : 'none'}}>
-              <Text>Barista: {this.state.baristaTips}</Text>
-              <Text>Cashier: {this.state.cashierTips}</Text>
-              <Text style={{display: this.state.barBackChecked ? '' : 'none'}}>Barback: {this.state.barbackTips}</Text>
-              <Text>K1: {this.state.k1Tips}</Text>
-              <Text>K2: {this.state.k2Tips}</Text>
-              <Text>K3: {this.state.k3Tips}</Text>
-            </View>
+            <Row>
+              <View style={{alignItems: 'center', display: this.state.showTips ? '' : 'none'}}>
+
+              {/* WORKING HERE ON LISTS */}
+              <List containerStyle={{marginBottom: 20}}>
+                {
+                  this.state.employees.map((l, i) => (
+                    <ListItem
+                      key={i}
+                      title={l.emp}
+                    />
+                  ))
+                }
+              </List>
+
+                <Text>Barista: {this.state.baristaTips}</Text>
+                <Text>Cashier: {this.state.cashierTips}</Text>
+                <Text style={{display: this.state.barBackChecked ? '' : 'none'}}>Barback: {this.state.barbackTips}</Text>
+                <Text>K1: {this.state.k1Tips}</Text>
+                <Text>K2: {this.state.k2Tips}</Text>
+                <Text>K3: {this.state.k3Tips}</Text>
+              </View>
+            </Row>
+
           </Col>
-          
+
         </Grid>
 
-        <Button
-          onPress={this.calculateTips.bind(this)}
-          title='Calculate Tips'
-          color='#fff'
-          backgroundColor='#70a9ca9e'
-        />
+        <View style={styles.bottomBtnsContainer}>
+          <TouchableOpacity
+            onPress={this.calculateTips.bind(this)}>
+              <Text style={styles.calcTipsBtn}>Calculate Tips</Text>
+          </TouchableOpacity>
 
-        <TouchableOpacity 
-          onPress={this.clearAll}>
-          <Text>Clear</Text>
-        </TouchableOpacity>
 
+          <TouchableOpacity 
+            onPress={this.clearAll}>
+            <Text style={styles.clearBtn}>Clear</Text>
+          </TouchableOpacity>
+
+        </View>
       </View>
     );
   }
@@ -220,7 +253,7 @@ const styles = StyleSheet.create({
     color: '#fff',    
   },
   listContainer: {
-    height: 230,
+    height: 250,
     flexDirection: 'row',
   },
   flatList: {
@@ -231,10 +264,10 @@ const styles = StyleSheet.create({
     fontSize: 25,
   },
   listShift: {
-    fontSize: 20
+    fontSize: 25
   },
   enterTips: {
-    padding: 20,    
+    padding: 20,
   },
   barbackContainer: {
     width: 200,
@@ -243,6 +276,25 @@ const styles = StyleSheet.create({
   },
   leftCol: {
     alignItems: 'center',
+  },
+  rightCol: {
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  shiftInfo: {
+    fontSize: 25
+  },
+  calcTipsBtn: {
+    fontSize: 35,
+    color: '#fff',
+    paddingBottom: 12
+  },
+  clearBtn: {
+    fontSize: 20,
+  },
+  bottomBtnsContainer: {
+    alignItems: 'center',
+    padding: 30
   }
 });
 
