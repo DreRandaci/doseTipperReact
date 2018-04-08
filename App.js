@@ -152,8 +152,9 @@ export default class App extends React.Component {
           />;
           
     renderTips = (item) => 
-        <View>
-          <Text>{item.item.emp}: ${item.item.tips}</Text>
+        <View style={styles.tipView}>
+          <Text style={styles.tipLine}>{item.item.emp}</Text>
+          <Text style={styles.tipItem}>${item.item.tips ? item.item.tips : 0}</Text>
         </View>;
     
 
@@ -182,7 +183,7 @@ export default class App extends React.Component {
 
             <Text style={styles.shifts}>Select Shift</Text>      
 
-            <View style={styles.listContainer}>        
+            <View style={styles.shiftListContainer}>        
               <FlatList
                 style={styles.flatList}
                 data={this.state.allShifts}
@@ -210,7 +211,7 @@ export default class App extends React.Component {
               <View>
                 <Text style={styles.shifts}>Tips</Text>
 
-                <View style={styles.listContainer}>
+                <View style={styles.tipListContainer}>
                   <FlatList 
                     style={styles.flatList}
                     data={this.state.employees}
@@ -268,7 +269,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#fff',    
   },
-  listContainer: {
+  shiftListContainer: {
     height: 250,
     flexDirection: 'row',
   },
@@ -310,7 +311,32 @@ const styles = StyleSheet.create({
   bottomBtnsContainer: {
     alignItems: 'center',
     padding: 30
-  }
+  },
+  tipListContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    height: 500
+  },
+  tipItem: {
+    color: 'gold',
+  },
+  tipView: {
+    margin: 5,
+    marginLeft: 10,
+    marginRight: 10,
+    backgroundColor: '#fafafa',
+    borderColor: '#ededed',
+    borderWidth: 1,
+    padding: 10,
+    borderRadius: 3,
+    opacity: 1,
+    width: 300,        
+  },
+  tipLine: {
+    // fontSize: 25,
+    // textAlign: 'center'
+  },
 });
 
 // Disables yellowbox warnings
