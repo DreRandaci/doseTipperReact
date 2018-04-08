@@ -8,17 +8,15 @@ import {
     Picker,
     Modal,
     TouchableOpacity, } from 'react-native';
-import { Button, CheckBox, List, ListItem } from 'react-native-elements';
+import { Button, CheckBox, List, ListItem, Divider } from 'react-native-elements';
 import { Col, Row, Grid } from 'react-native-easy-grid';
 
 export default class App extends React.Component {
     constructor(props) {
       super(props);      
       this.state = {        
-        showTips: false,
         barBackChecked: false,        
         enteredTips: '',
-        calculatedTips: '',
         allShifts: [
           {shift: '6am - 1pm', hours: 7, checked: true},
           {shift: '7am - 1pm', hours: 6, checked: false},
@@ -109,9 +107,33 @@ export default class App extends React.Component {
 
         // Adds remaining tips to K1 and K2 from 9am-1pm block
         k1k2Tips+=averageTipsAfterFirstPayout; 
+        
+        let employeeTips = this.state.employees.map((val, i) => {
+          switch (val.emp) {
+            case 'Barista':
+              val.tips = bariAndCashiTips;
+              return val;
+            case 'Cashier':
+              val.tips = bariAndCashiTips
+              return val;
+            case 'Barback':
+              val.tips = bbTips;
+              return val;
+            case 'K1': 
+              val.tips = k1k2Tips;
+              return val;
+            case 'K2':
+              val.tips = k1k2Tips 
+              return val;
+            case 'K3':
+              val.tips = k3Tips;
+              return val;
+            break;
+          }
+        });
 
         this.setState({
-          showTips: true,
+          employees: employeeTips,
           baristaTips: bariAndCashiTips, 
           cashierTips: bariAndCashiTips, 
           barbackTips: bbTips, 
@@ -133,7 +155,13 @@ export default class App extends React.Component {
           title={item.item.shift}
           checkedIcon='check'
           uncheckedIcon='circle-o'          
-          />;    
+          />;
+          
+    renderTips = (item) => 
+        <View>
+          <Text>{item.item.emp}: ${item.item.tips}</Text>
+        </View>;
+    
 
   render() {
 
@@ -182,35 +210,29 @@ export default class App extends React.Component {
             </View>
           </Col>
 
-          <Col style={styles.rightCol}>
-            <Row>
+          <Col style={styles.rightCol}>            
+
+            <Row style={{marginTop: 60}}>
               <View>
-                <Text style={styles.shiftInfo}>Shift: {this.state.selectedShift.shift}</Text>
-                <Text style={styles.shiftInfo}>Shift Hours: {this.state.selectedShift.hours}</Text>        
+                <Text style={styles.shifts}>Tips</Text>
+
+                <View style={styles.listContainer}>
+                  <FlatList 
+                    style={styles.flatList}
+                    data={this.state.employees}
+                    keyExtractor={(item, index) => index}
+                    renderItem={(item) => this.renderTips(item)}
+                  />              
+                                
+                </View>
+
               </View>
             </Row>
 
-            <Row>
-              <View style={{alignItems: 'center', display: this.state.showTips ? '' : 'none'}}>
-
-              {/* WORKING HERE ON LISTS */}
-              <List containerStyle={{marginBottom: 20}}>
-                {
-                  this.state.employees.map((l, i) => (
-                    <ListItem
-                      key={i}
-                      title={l.emp}
-                    />
-                  ))
-                }
-              </List>
-
-                <Text>Barista: {this.state.baristaTips}</Text>
-                <Text>Cashier: {this.state.cashierTips}</Text>
-                <Text style={{display: this.state.barBackChecked ? '' : 'none'}}>Barback: {this.state.barbackTips}</Text>
-                <Text>K1: {this.state.k1Tips}</Text>
-                <Text>K2: {this.state.k2Tips}</Text>
-                <Text>K3: {this.state.k3Tips}</Text>
+            <Row style={{marginTop: 200}}>
+              <View>
+                <Text style={styles.shiftInfo}>Shift: {this.state.selectedShift.shift}</Text>
+                <Text style={styles.shiftInfo}>Shift Hours: {this.state.selectedShift.hours}</Text>        
               </View>
             </Row>
 
@@ -282,7 +304,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   shiftInfo: {
-    fontSize: 25
+    // fontSize: 25
   },
   calcTipsBtn: {
     fontSize: 35,
