@@ -5,10 +5,8 @@ import {
     View,
     TextInput,
     FlatList,
-    Picker,
-    Modal,
     TouchableOpacity, } from 'react-native';
-import { Button, CheckBox, List, ListItem, Divider } from 'react-native-elements';
+import { Button, CheckBox } from 'react-native-elements';
 import { Col, Row, Grid } from 'react-native-easy-grid';
 
 export default class App extends React.Component {
@@ -24,20 +22,14 @@ export default class App extends React.Component {
           {shift: '1pm - 7pm', hours: 6, checked: false},
         ],
         employees: [
-          {emp: 'Barista', tips: ''},
-          {emp: 'Cashier', tips: ''},
-          {emp: 'Barback', tips: ''},
-          {emp: 'K1', tips: ''},
-          {emp: 'K2', tips: ''},
-          {emp: 'K3', tips: ''},
+          {emp: 'Barista', tips: 0},
+          {emp: 'Cashier', tips: 0},
+          {emp: 'Barback', tips: 0},
+          {emp: 'K1', tips: 0},
+          {emp: 'K2', tips: 0},
+          {emp: 'K3', tips: 0},
         ],
         selectedShift: {shift: '6am - 1pm', hours: 7, checked: true},
-        baristaTips: '',
-        cashierTips: '',
-        barbackTips: '',
-        k1Tips: '',
-        k2Tips: '',
-        k3Tips: '',
       };
       this.initialState = this.state;
     }
@@ -49,6 +41,14 @@ export default class App extends React.Component {
         {shift: '1pm - 7pm', hours: 6, checked: false},
         {shift: '1pm - 3pm', hours: 2, checked: false}
       ];
+      this.initialState.employees = [
+        {emp: 'Barista', tips: 0},
+        {emp: 'Cashier', tips: 0},
+        {emp: 'Barback', tips: 0},
+        {emp: 'K1', tips: 0},
+        {emp: 'K2', tips: 0},
+        {emp: 'K3', tips: 0},
+      ],
       this.initialState.selectedShift = {}; 
       this.setState(this.initialState);
     };
@@ -134,12 +134,6 @@ export default class App extends React.Component {
 
         this.setState({
           employees: employeeTips,
-          baristaTips: bariAndCashiTips, 
-          cashierTips: bariAndCashiTips, 
-          barbackTips: bbTips, 
-          k1Tips: k1k2Tips,
-          k2Tips: k1k2Tips,
-          k3Tips: k3Tips,
         });
       }
     }
@@ -304,7 +298,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   shiftInfo: {
-    // fontSize: 25
   },
   calcTipsBtn: {
     fontSize: 35,
