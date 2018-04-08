@@ -13,8 +13,8 @@ import { Col, Row, Grid } from 'react-native-easy-grid';
 
 export default class App extends React.Component {
     constructor(props) {
-      super(props);
-      this.state = {
+      super(props);      
+      this.state = {        
         showTips: false,
         barBackChecked: false,        
         enteredTips: '',
@@ -22,8 +22,8 @@ export default class App extends React.Component {
         allShifts: [
           {shift: '6am - 1pm', hours: 7, checked: false},
           {shift: '7am - 1pm', hours: 6, checked: false},
+          {shift: '1pm - 3pm', hours: 2, checked: false},
           {shift: '1pm - 7pm', hours: 6, checked: false},
-          {shift: '1pm - 3pm', hours: 2, checked: false}
         ],
         selectedShift: [],
         baristaTips: '',
@@ -33,20 +33,31 @@ export default class App extends React.Component {
         k2Tips: '',
         k3Tips: '',
       };
+      this.initialState = this.state;
     }
+
+    clearAll = () => {
+      this.initialState.allShifts = [
+        {shift: '6am - 1pm', hours: 7, checked: false},
+        {shift: '7am - 1pm', hours: 6, checked: false},
+        {shift: '1pm - 7pm', hours: 6, checked: false},
+        {shift: '1pm - 3pm', hours: 2, checked: false}
+      ]; 
+      this.setState(this.initialState);
+    };
   
     toggleBarback = () => 
       this.setState({barBackChecked: !this.state.barBackChecked});
 
     selectShift = (shift) => {
       shift.item.checked = !shift.item.checked;
-      // loop over your state data and create newStateArray 
+      // loop over allShifts and update checked vals
       let newShifts = this.state.allShifts.map((val,i) => {
         if (shift.index === i) {
             // change selected value of pressed entry
             return { ...val }; 
         }
-        //otherwise just return current value
+        // otherwise, uncheck the item and return current value
         val.checked = false;
         return val;
       });
@@ -79,7 +90,7 @@ export default class App extends React.Component {
         let kitchenTipsPerHr = kitchenTips/shiftHrs;
         
         // Calculates K1 and K2 tips before 9am
-        let k1k2Tips = hrs === 7 ? kitchenTipsPerHr*3/2 : kitchenTipsPerHr*2/2;
+        let k1k2Tips = shiftHrs === 7 ? kitchenTipsPerHr*3/2 : kitchenTipsPerHr*2/2;
         
         // Calculates tips from 9am-1pm
         let averageTipsAfterFirstPayout = kitchenTipsPerHr*4/3;
@@ -112,7 +123,7 @@ export default class App extends React.Component {
           title={item.item.shift}
           checkedIcon='check'
           uncheckedIcon='circle-o'          
-        />;
+          />;    
 
   render() {
 
@@ -121,59 +132,72 @@ export default class App extends React.Component {
         
         <Text style={styles.heading}>Dose Tipper</Text>
 
-        <View>
-          <TextInput
-          placeholder={'Enter Total Tips'}
-          clearTextOnFocus={true}          
-          style={styles.enterTips} 
-          fontSize={20}
-          maxLength={40}
-          onChangeText={(tips) => this.setState({enteredTips: tips})}
-          value={this.state.enteredTips}/>
+        <Grid style={styles.grid}>
+          <Col style={styles.leftCol}>
+            <View>
+              <TextInput
+              placeholder={'Enter Total Tips'}
+              clearTextOnFocus={true}          
+              style={styles.enterTips} 
+              fontSize={20}
+              maxLength={40}
+              onChangeText={(tips) => this.setState({enteredTips: tips})}
+              value={this.state.enteredTips}/>
+              
+            </View>
+
+            <Text style={styles.shifts}>Select Shift</Text>      
+
+            <View style={styles.listContainer}>        
+              <FlatList
+                style={styles.flatList}
+                data={this.state.allShifts}
+                keyExtractor={(item, index) => index}
+                renderItem={(item) => this.renderShifts(item)}
+                />
+            </View>
+            <View style={styles.barbackContainer}>
+              <CheckBox
+                onPress={ this.toggleBarback.bind(this) }
+                iconRight
+                center
+                checkedColor='gold'
+                title='Barback'
+                checkedIcon='check'
+                uncheckedIcon='circle-o'
+                checked={this.state.barBackChecked}
+              />
+            </View>
+          </Col>
+
+          <Col>
+            <Text style={{color: 'red'}}>Shift: {this.state.selectedShift.shift}</Text>
+            <Text style={{color: 'red'}}>Shift Hours: {this.state.selectedShift.hours}</Text>        
+
+            <View style={{display: this.state.showTips ? '' : 'none'}}>
+              <Text>Barista: {this.state.baristaTips}</Text>
+              <Text>Cashier: {this.state.cashierTips}</Text>
+              <Text style={{display: this.state.barBackChecked ? '' : 'none'}}>Barback: {this.state.barbackTips}</Text>
+              <Text>K1: {this.state.k1Tips}</Text>
+              <Text>K2: {this.state.k2Tips}</Text>
+              <Text>K3: {this.state.k3Tips}</Text>
+            </View>
+          </Col>
           
-        </View>
-
-        <Text style={styles.shifts}>Select Shift</Text>      
-
-        <View style={styles.listContainer}>        
-          <FlatList
-            style={styles.flatList}
-            data={this.state.allShifts}
-            keyExtractor={(item, index) => index}
-            renderItem={(item) => this.renderShifts(item)}
-          />
-        </View>
-        
-        <Text style={{color: 'red'}}>Shift: {this.state.selectedShift.shift}</Text>
-        <Text style={{color: 'red'}}>Shift Hours: {this.state.selectedShift.hours}</Text>        
-        
-        <CheckBox
-          onPress={ this.toggleBarback.bind(this) }
-          iconRight
-          center
-          checkedColor='gold'
-          title='Barback     '
-          checkedIcon='check'
-          uncheckedIcon='circle-o'
-          checked={this.state.barBackChecked}
-        />
+        </Grid>
 
         <Button
           onPress={this.calculateTips.bind(this)}
-          raised
           title='Calculate Tips'
           color='#fff'
           backgroundColor='#70a9ca9e'
         />
 
-        <View style={{display: this.state.showTips ? '' : 'none'}}>
-          <Text>Barista: {this.state.baristaTips}</Text>
-          <Text>Cashier: {this.state.cashierTips}</Text>
-          <Text style={{display: this.state.barBackChecked ? '' : 'none'}}>Barback: {this.state.barbackTips}</Text>
-          <Text>K1: {this.state.k1Tips}</Text>
-          <Text>K2: {this.state.k2Tips}</Text>
-          <Text>K3: {this.state.k3Tips}</Text>
-        </View>
+        <TouchableOpacity 
+          onPress={this.clearAll}>
+          <Text>Clear</Text>
+        </TouchableOpacity>
+
       </View>
     );
   }
@@ -186,14 +210,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center'
   },
-  // container: {
-  //   flex: 1,
-  //   backgroundColor: '#70a9ca9e',
-  //   alignItems: 'center',
-  //   justifyContent: 'center'
-  // },
+  grid: {
+    marginTop: 30,
+  },
   heading: {
     fontSize: 50,
+    marginTop: 50,
     fontWeight: 'bold',
     color: '#fff',    
   },
@@ -213,6 +235,14 @@ const styles = StyleSheet.create({
   },
   enterTips: {
     padding: 20,    
+  },
+  barbackContainer: {
+    width: 200,
+    padding: 5,
+    marginTop: 5,
+  },
+  leftCol: {
+    alignItems: 'center',
   }
 });
 
