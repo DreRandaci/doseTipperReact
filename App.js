@@ -140,12 +140,11 @@ export default class App extends React.Component {
 
     renderShifts = (item) =>
         <CheckBox
-          size={30}
           checked={item.item.checked}
           onPress={this.selectShift.bind(this, item)}
           iconRight
           center
-          checkedColor='gold'
+          checkedColor='#F7DC1B'
           title={item.item.shift}
           checkedIcon='check'
           uncheckedIcon='circle-o'          
@@ -163,7 +162,7 @@ export default class App extends React.Component {
     return (
       <View style={styles.container}>
         
-        <Text style={styles.heading}>Dose Tipper</Text>
+        <Text style={styles.title}>Dose Tipper</Text>
 
         <View>
             <TextInput
@@ -181,7 +180,7 @@ export default class App extends React.Component {
 
         <Grid style={styles.grid}>
           <Col style={styles.leftCol}>
-            <Text style={styles.shifts}>Select Shift</Text>      
+            <Text style={styles.headings}>Select Shift</Text>      
 
             <View style={styles.shiftListContainer}>        
               <FlatList
@@ -196,7 +195,7 @@ export default class App extends React.Component {
                 onPress={ this.toggleBarback.bind(this) }
                 iconRight
                 center
-                checkedColor='gold'
+                checkedColor='#F7DC1B'
                 title='Barback'
                 checkedIcon='check'
                 uncheckedIcon='circle-o'
@@ -213,7 +212,7 @@ export default class App extends React.Component {
 
           <Col style={styles.rightCol}>            
 
-            <Text style={styles.shifts}>Tips</Text>
+            <Text style={styles.headings}>Tips</Text>
 
             <View>
 
@@ -262,7 +261,7 @@ const styles = StyleSheet.create({
   grid: {
     marginTop: 30,
   },
-  heading: {
+  title: {
     fontSize: 50,
     marginTop: 50,
     fontWeight: 'bold',
@@ -275,9 +274,10 @@ const styles = StyleSheet.create({
   flatList: {
     padding: 5,
   },
-  shifts: {
+  headings: {
     marginTop: 10,
     fontSize: 25,
+    color: '#192C47'
   },
   listShift: {
     fontSize: 25
@@ -308,10 +308,11 @@ const styles = StyleSheet.create({
   calcTipsBtn: {
     fontSize: 35,
     color: '#fff',
-    paddingBottom: 12
+    paddingBottom: 12,    
   },
   clearBtn: {
     fontSize: 20,
+    color: '#192C47'
   },
   bottomBtnsContainer: {
     alignItems: 'center',
@@ -321,7 +322,7 @@ const styles = StyleSheet.create({
     height: 500
   },
   tipTotal: {
-    color: 'gold',
+    color: '#F7DC1B',
     fontSize: 20,
     fontWeight: 'bold'
   },
@@ -338,7 +339,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between'
   },
   tipEmp: {
-    // fontSize: 18,
     color: 'white'
   },
 });
