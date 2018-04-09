@@ -165,22 +165,22 @@ export default class App extends React.Component {
         
         <Text style={styles.heading}>Dose Tipper</Text>
 
+        <View>
+            <TextInput
+              keyboardType={'number-pad'}
+              autoFocus={true}
+              placeholder={'Enter Total Tips'}
+              clearTextOnFocus={true}          
+              style={styles.enterTips} 
+              fontSize={20}
+              maxLength={40}
+              onChangeText={(tips) => this.setState({enteredTips: tips})}
+              value={this.state.enteredTips}/>
+              
+        </View>
+
         <Grid style={styles.grid}>
           <Col style={styles.leftCol}>
-            <View>
-              <TextInput
-                keyboardType={'number-pad'}
-                autoFocus={true}
-                placeholder={'Enter Total Tips'}
-                clearTextOnFocus={true}          
-                style={styles.enterTips} 
-                fontSize={20}
-                maxLength={40}
-                onChangeText={(tips) => this.setState({enteredTips: tips})}
-                value={this.state.enteredTips}/>
-              
-            </View>
-
             <Text style={styles.shifts}>Select Shift</Text>      
 
             <View style={styles.shiftListContainer}>        
@@ -207,7 +207,7 @@ export default class App extends React.Component {
 
           <Col style={styles.rightCol}>            
 
-            <Row style={{marginTop: 60}}>
+            <Row>
               <View>
                 <Text style={styles.shifts}>Tips</Text>
 
@@ -224,7 +224,7 @@ export default class App extends React.Component {
               </View>
             </Row>
 
-            <Row style={{marginTop: 200}}>
+            <Row>
               <View>
                 <Text style={styles.shiftInfo}>Shift: {this.state.selectedShift.shift}</Text>
                 <Text style={styles.shiftInfo}>Shift Hours: {this.state.selectedShift.hours}</Text>        
@@ -296,7 +296,6 @@ const styles = StyleSheet.create({
   },
   rightCol: {
     alignItems: 'center',
-    justifyContent: 'center'
   },
   shiftInfo: {
   },
@@ -325,11 +324,11 @@ const styles = StyleSheet.create({
     margin: 5,
     marginLeft: 10,
     marginRight: 10,
-    backgroundColor: '#fafafa',
-    borderColor: '#ededed',
-    borderWidth: 1,
+    // backgroundColor: '#fafafa',
+    // borderColor: '#ededed',
+    // borderWidth: 1,
     padding: 10,
-    borderRadius: 3,
+    // borderRadius: 3,
     opacity: 1,
     width: 300,        
   },
