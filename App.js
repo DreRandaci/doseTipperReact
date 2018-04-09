@@ -153,8 +153,8 @@ export default class App extends React.Component {
           
     renderTips = (item) => 
         <View style={styles.tipView}>
-          <Text style={styles.tipLine}>{item.item.emp}</Text>
-          <Text style={styles.tipItem}>${item.item.tips ? item.item.tips : 0}</Text>
+          <Text style={styles.tipEmp}>{item.item.emp}</Text>
+          <Text style={styles.tipTotal}>${item.item.tips ? item.item.tips : 0}</Text>
         </View>;
     
 
@@ -203,33 +203,31 @@ export default class App extends React.Component {
                 checked={this.state.barBackChecked}
               />
             </View>
+
+            <View style={styles.shiftInfoContainer}>
+              <Text style={styles.shiftInfo}>Shift: {this.state.selectedShift.shift}</Text>
+              <Text style={styles.shiftInfo}>Shift Hours: {this.state.selectedShift.hours}</Text>        
+            </View>
+
           </Col>
 
           <Col style={styles.rightCol}>            
 
-            <Row>
-              <View>
-                <Text style={styles.shifts}>Tips</Text>
+            <Text style={styles.shifts}>Tips</Text>
 
-                <View style={styles.tipListContainer}>
-                  <FlatList 
-                    style={styles.flatList}
-                    data={this.state.employees}
-                    keyExtractor={(item, index) => index}
-                    renderItem={(item) => this.renderTips(item)}
-                  />              
-                                
-                </View>
+            <View>
 
+              <View style={styles.tipListContainer}>
+                <FlatList 
+                  style={styles.flatList}
+                  data={this.state.employees}
+                  keyExtractor={(item, index) => index}
+                  renderItem={(item) => this.renderTips(item)}
+                />              
+                              
               </View>
-            </Row>
 
-            <Row>
-              <View>
-                <Text style={styles.shiftInfo}>Shift: {this.state.selectedShift.shift}</Text>
-                <Text style={styles.shiftInfo}>Shift Hours: {this.state.selectedShift.hours}</Text>        
-              </View>
-            </Row>
+            </View>
 
           </Col>
 
@@ -256,9 +254,10 @@ export default class App extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#70a9ca9e',
+    // backgroundColor: '#70a9ca9e',
+    backgroundColor: '#7AB7E7',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   grid: {
     marginTop: 30,
@@ -293,11 +292,18 @@ const styles = StyleSheet.create({
   },
   leftCol: {
     alignItems: 'center',
+    borderRightColor: 'white',
+    borderRightWidth: 1,
   },
   rightCol: {
     alignItems: 'center',
   },
+  shiftInfoContainer: {
+    alignItems: 'center',
+    marginTop: 10
+  },
   shiftInfo: {
+    color: '#0D6B7F'
   },
   calcTipsBtn: {
     fontSize: 35,
@@ -312,29 +318,28 @@ const styles = StyleSheet.create({
     padding: 30
   },
   tipListContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
     height: 500
   },
-  tipItem: {
+  tipTotal: {
     color: 'gold',
+    fontSize: 20,
+    fontWeight: 'bold'
   },
   tipView: {
+    flexDirection: 'row',
     margin: 5,
     marginLeft: 10,
     marginRight: 10,
-    // backgroundColor: '#fafafa',
-    // borderColor: '#ededed',
-    // borderWidth: 1,
     padding: 10,
-    // borderRadius: 3,
     opacity: 1,
-    width: 300,        
+    width: 300,    
+    borderBottomColor: '#fff',
+    borderBottomWidth: 1,    
+    justifyContent: 'space-between'
   },
-  tipLine: {
-    // fontSize: 25,
-    // textAlign: 'center'
+  tipEmp: {
+    // fontSize: 18,
+    color: 'white'
   },
 });
 
