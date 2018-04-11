@@ -202,16 +202,18 @@ export default class Murphy extends React.Component {
     }
 
     renderShifts = (item) =>
-        <CheckBox
-          checked={item.item.checked}
-          onPress={this.selectShift.bind(this, item)}
-          iconRight
-          center
-          checkedColor='#F7DC1B'
-          title={item.item.shift}
-          checkedIcon='check'
-          uncheckedIcon='circle-o'          
-          />;
+        <View style={styles.shiftBtn}>
+            <CheckBox
+            checked={item.item.checked}
+            onPress={this.selectShift.bind(this, item)}
+            iconRight
+            center
+            checkedColor='#F7DC1B'
+            title={item.item.shift}
+            checkedIcon='check'
+            uncheckedIcon='circle-o'   
+            />
+          </View>;
           
     render() {
 
@@ -264,7 +266,7 @@ export default class Murphy extends React.Component {
                         <View>
 
                             <View style={styles.shiftInfoContainer}>
-                                <Text style={styles.shiftInfo}>Tips: ${this.state.enteredTips ? this.state.enteredTips : 0}</Text>
+                                <Text style={styles.shiftInfo}>Total Tips: ${this.state.enteredTips ? this.state.enteredTips : 0}</Text>
                             </View>
 
                             <View style={styles.shiftInfoContainer}>
@@ -274,7 +276,11 @@ export default class Murphy extends React.Component {
                             <View style={styles.shiftInfoContainer}>
                                 <Text style={styles.shiftInfo}>Shift Hours: {this.state.selectedShift.hours}</Text>        
                             </View>
-                        
+
+                            <View style={styles.shiftInfoContainer}>
+                                <Text style={styles.shiftInfo}>Barback: {this.state.barBackChecked ? 'Yes' : 'No'}</Text>
+                            </View>
+
                         </View>
                     </View>
 
