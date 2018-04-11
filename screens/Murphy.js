@@ -16,13 +16,14 @@ export default class Murphy extends React.Component {
     constructor(props) {
       super(props);      
       this.state = {        
-        barBackChecked: false,        
+        barBackChecked: false,
+        barBackDisabled: false,        
         enteredTips: '',
         allShifts: [
           {shift: '6am - 1pm', hours: 7, checked: true},
           {shift: '7am - 1pm', hours: 6, checked: false},
           {shift: '1pm - 3pm', hours: 2, checked: false},
-          {shift: '1pm - 7pm', hours: 6, checked: false},
+          {shift: '3pm - 7pm', hours: 4, checked: false},
         ],
         employees: [
           {emp: 'Barista', tips: 0},
@@ -42,8 +43,8 @@ export default class Murphy extends React.Component {
       this.initialState.allShifts = [
         {shift: '6am - 1pm', hours: 7, checked: false},
         {shift: '7am - 1pm', hours: 6, checked: false},
-        {shift: '1pm - 7pm', hours: 6, checked: false},
-        {shift: '1pm - 3pm', hours: 2, checked: false}
+        {shift: '1pm - 3pm', hours: 2, checked: false},
+        {shift: '3pm - 7pm', hours: 4, checked: false},
       ];
       this.initialState.employees = [
         {emp: 'Barista', tips: 0},
@@ -62,21 +63,28 @@ export default class Murphy extends React.Component {
       this.setState({barBackChecked: !this.state.barBackChecked});
 
     selectShift = (shift) => {
-      shift.item.checked = !shift.item.checked;
-      // loop over allShifts and update checked vals
-      let newShifts = this.state.allShifts.map((val,i) => {
-        if (shift.index === i) {
-            // change selected value of pressed entry
-            return { ...val }; 
+        if(shift.item.hours === 2 || shift.item.hours === 4) {
+            this.setState({barBackDisabled: true, barBackChecked: true});
+        } else {
+            this.setState({barBackChecked: false});
         }
-        // otherwise, uncheck the item and return current value
-        val.checked = false;
-        return val;
-      });
-      this.setState({        
-        allShifts: newShifts,
-        selectedShift: shift.item                
-      })
+
+
+        shift.item.checked = !shift.item.checked;
+        // loop over allShifts and update checked vals
+        let newShifts = this.state.allShifts.map((val,i) => {
+            if (shift.index === i) {
+                // change selected value of pressed entry
+                return { ...val }; 
+            }
+            // otherwise, uncheck the item and return current value
+            val.checked = false;
+            return val;
+        });
+        this.setState({        
+            allShifts: newShifts,
+            selectedShift: shift.item                
+        })
     }; 
 
     calculate2HrTips = () => {
@@ -114,11 +122,38 @@ export default class Murphy extends React.Component {
 
     } 
 
+    calculate4HrTips = () => {
+        let shiftHrs = this.state.selectedShift.hours;
+        let enteredTips = this.state.enteredTips;
+        let kitchenTips = this.state.enteredTips*0.2;
+
+        let k4Tips = (enteredTips*0.2);
+        let baristaTips = enteredTips-k4Tips;
+        
+        this.setState({
+            employees: [
+                {emp: 'Barista', tips: baristaTips.toFixed(2)},
+                {emp: 'Cashier', tips: 0},
+                {emp: 'Barback', tips: 0},
+                {emp: 'K1', tips: 0},
+                {emp: 'K2', tips: 0},
+                {emp: 'K3', tips: 0},
+                {emp: 'K4', tips: k4Tips},
+            ],
+        });
+
+    }
+
     calculateTips = () => {
       if(this.state.enteredTips > 0 && this.state.selectedShift.hours > 0) {
         
         if(this.state.selectedShift.hours === 2) {
             this.calculate2HrTips();
+            return;
+        }
+
+        if(this.state.selectedShift.hours === 4) {
+            this.calculate4HrTips();
             return;
         }
 
@@ -218,9 +253,9 @@ export default class Murphy extends React.Component {
                                 onPress={ this.toggleBarback.bind(this) }
                                 iconRight
                                 center
-                                checkedColor='#F7DC1B'
+                                checkedColor={this.state.barBackDisabled ? 'black' :'#F7DC1B'}
                                 title='Barback'
-                                checkedIcon='check'
+                                checkedIcon={this.state.barBackDisabled ? 'close': 'check'}
                                 uncheckedIcon='circle-o'
                                 checked={this.state.barBackChecked}
                             />
