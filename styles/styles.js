@@ -49,6 +49,8 @@ const styles = StyleSheet.create({
       borderRadius: 5,
       paddingTop: 40,
       paddingBottom: 30,
+      paddingLeft: 10,
+      paddingRight: 10,
       backgroundColor: '#6da6c7',
       shadowColor: '#4a4f52',
       shadowOffset: { width: 1, height: 1 },
@@ -56,7 +58,7 @@ const styles = StyleSheet.create({
       shadowOpacity: .3,
     },
     shiftInfoContainer: {
-      paddingLeft: 15,
+      paddingLeft: 20,
       marginTop: 10,
       flexDirection: 'row',
       justifyContent: 'space-between',

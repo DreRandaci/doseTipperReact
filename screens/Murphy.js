@@ -7,6 +7,7 @@ import {
     FlatList,
     TouchableOpacity, } from 'react-native';
 import styles from '../styles/styles';
+import RenderTips from '../components/renderTips';
 import assignTips from '../methods/assignTips';
 import { Button, CheckBox } from 'react-native-elements';
 import { Col, Grid } from 'react-native-easy-grid';
@@ -137,120 +138,105 @@ export default class Murphy extends React.Component {
           uncheckedIcon='circle-o'          
           />;
           
-    renderTips = (item) => 
-        <View style={styles.tipView}>
-          <Text style={styles.tipEmp}>{item.item.emp}</Text>
-          <Text style={styles.tipTotal}>${item.item.tips ? item.item.tips : 0}
-          </Text>
-        </View>;
-    
+    render() {
 
-  render() {
+        return (
+        <View style={styles.container}>
+            
+            <Grid style={styles.grid}>
+                <Col style={{width: 350}}>
+                    <View style={styles.leftCol}>
 
-    return (
-      <View style={styles.container}>
-        
-        <Grid style={styles.grid}>
-          <Col style={{width: 350}}>
-            <View style={styles.leftCol}>
+                        <Text style={styles.title}>Dose Tipper</Text>
 
-              <Text style={styles.title}>Dose Tipper</Text>
+                        <View>
+                            <TextInput
+                                keyboardType={'number-pad'}
+                                autoFocus={true}
+                                placeholder={'Enter Total Tips'}
+                                clearTextOnFocus={true}          
+                                style={styles.enterTips} 
+                                fontSize={20}
+                                maxLength={40}
+                                onChangeText={(tips) => this.setState({enteredTips: tips})}
+                                value={this.state.enteredTips}/>
+                        </View>
 
-              <View>
-                  <TextInput
-                    keyboardType={'number-pad'}
-                    autoFocus={true}
-                    placeholder={'Enter Total Tips'}
-                    clearTextOnFocus={true}          
-                    style={styles.enterTips} 
-                    fontSize={20}
-                    maxLength={40}
-                    onChangeText={(tips) => this.setState({enteredTips: tips})}
-                    value={this.state.enteredTips}/>
-              </View>
+                        <Text style={styles.headings}>Select Shift</Text>      
 
+                        <View style={styles.shiftListContainer}>        
+                            <FlatList
+                                style={styles.flatList}
+                                data={this.state.allShifts}
+                                keyExtractor={(item, index) => index}
+                                renderItem={(item) => this.renderShifts(item)}
+                                />
+                        </View>
 
-                <Text style={styles.headings}>Select Shift</Text>      
+                        <View style={styles.barbackContainer}>
+                            <CheckBox
+                                onPress={ this.toggleBarback.bind(this) }
+                                iconRight
+                                center
+                                checkedColor='#F7DC1B'
+                                title='Barback'
+                                checkedIcon='check'
+                                uncheckedIcon='circle-o'
+                                checked={this.state.barBackChecked}
+                            />
+                        </View>
+                        
+                        <View>
 
-                <View style={styles.shiftListContainer}>        
-                  <FlatList
-                    style={styles.flatList}
-                    data={this.state.allShifts}
-                    keyExtractor={(item, index) => index}
-                    renderItem={(item) => this.renderShifts(item)}
-                    />
-                </View>
-                <View style={styles.barbackContainer}>
-                  <CheckBox
-                    onPress={ this.toggleBarback.bind(this) }
-                    iconRight
-                    center
-                    checkedColor='#F7DC1B'
-                    title='Barback'
-                    checkedIcon='check'
-                    uncheckedIcon='circle-o'
-                    checked={this.state.barBackChecked}
-                  />
-                </View>
-                
-                <View>
+                            <View style={styles.shiftInfoContainer}>
+                                <Text style={styles.shiftInfo}>Tips: ${this.state.enteredTips ? this.state.enteredTips : 0}</Text>
+                            </View>
 
-                  <View style={styles.shiftInfoContainer}>
-                    <Text style={styles.shiftInfo}>Tips: ${this.state.enteredTips ? this.state.enteredTips : 0}</Text>
-                  </View>
+                            <View style={styles.shiftInfoContainer}>
+                                <Text style={styles.shiftInfo}>Shift: {this.state.selectedShift.shift}</Text>
+                            </View>
 
-                  <View style={styles.shiftInfoContainer}>
-                    <Text style={styles.shiftInfo}>Shift: {this.state.selectedShift.shift}</Text>
-                  </View>
+                            <View style={styles.shiftInfoContainer}>
+                                <Text style={styles.shiftInfo}>Shift Hours: {this.state.selectedShift.hours}</Text>        
+                            </View>
+                        
+                        </View>
+                    </View>
 
-                  <View style={styles.shiftInfoContainer}>
-                    <Text style={styles.shiftInfo}>Shift Hours: {this.state.selectedShift.hours}</Text>        
-                  </View>
-                  
-                </View>
-            </View>
+                </Col>
 
-          </Col>
+                <Col style={styles.rightCol}>            
 
-          <Col style={styles.rightCol}>            
+                    <Text style={styles.headings}>Tips</Text>
 
-            <Text style={styles.headings}>Tips</Text>
+                    <View>
+                        <View style={styles.tipListContainer}>
+                            <FlatList 
+                            style={styles.flatList}
+                            data={this.state.employees}
+                            keyExtractor={(item, index) => index}
+                            renderItem={(item) => <RenderTips item={item}/>}
+                            />              
+                        </View>
+                    </View>
 
-            <View>
+                    <View style={styles.bottomBtnsContainer}>
+                        <TouchableOpacity
+                            onPress={this.calculateTips.bind(this)}>
+                            <Text style={styles.calcTipsBtn}>Calculate Tips</Text>
+                        </TouchableOpacity>
 
-              <View style={styles.tipListContainer}>
-                <FlatList 
-                  style={styles.flatList}
-                  data={this.state.employees}
-                  keyExtractor={(item, index) => index}
-                  renderItem={(item) => this.renderTips(item)}
-                />              
-                              
-              </View>
+                        <TouchableOpacity 
+                            onPress={this.clearAll}>
+                            <Text style={styles.clearBtn}>Clear</Text>
+                        </TouchableOpacity>
+                    </View>
 
-            </View>
+                </Col>
 
-            <View style={styles.bottomBtnsContainer}>
+            </Grid>
 
-              <TouchableOpacity
-                onPress={this.calculateTips.bind(this)}>
-                  <Text style={styles.calcTipsBtn}>Calculate Tips</Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity 
-                onPress={this.clearAll}>
-                <Text style={styles.clearBtn}>Clear</Text>
-              </TouchableOpacity>
-
-            </View>
-
-          </Col>
-
-        </Grid>
-
-        
-
-      </View>
-    );
-  }
+        </View>
+        );
+    }
 }
