@@ -6,13 +6,31 @@ import {
     FlatList,
     TouchableOpacity, } from 'react-native';
 import styles from '../styles/MurphyStyles';
+import Tips from '../components/Tips';
 import { CheckBox, } from 'react-native-elements';
+import { Col } from 'react-native-easy-grid';
 
 export default class Shifts extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             barBackChecked: false,
+            enteredTips: '',        
+            selectedShift: {shift: '6am - 1pm', hours: 7, checked: true},
+            allShifts: [
+                {shift: '6am - 1pm', hours: 7, checked: true},
+                {shift: '7am - 1pm', hours: 6, checked: false},
+                {shift: '1pm - 3pm', hours: 2, checked: false},
+                {shift: '1pm - 7pm', hours: 6, checked: false},
+            ],
+            employees: [
+                {emp: 'Barista', tips: 0},
+                {emp: 'Cashier', tips: 0},
+                {emp: 'Barback', tips: 0},
+                {emp: 'K1', tips: 0},
+                {emp: 'K2', tips: 0},
+                {emp: 'K3', tips: 0},
+            ],
         }
     }
 
@@ -52,45 +70,76 @@ export default class Shifts extends React.Component {
     render() {
         return(
             <View>
-                <Text style={styles.headings}>Select Shift</Text>      
 
-                <View style={styles.shiftListContainer}>        
-                  <FlatList
-                    style={styles.flatList}
-                    data={this.props.allShifts}
-                    keyExtractor={(item, index) => index}
-                    renderItem={(item) => this.renderShifts(item)}
-                    />
-                </View>
+                <Col style={{width: 350}}>
+                    <View style={styles.leftCol}>
 
-                <View style={styles.barbackContainer}>
-                  <CheckBox
-                    onPress={ this.toggleBarback.bind(this) }
-                    iconRight
-                    center
-                    checkedColor='#F7DC1B'
-                    title='Barback'
-                    checkedIcon='check'
-                    uncheckedIcon='circle-o'
-                    checked={this.state.barBackChecked}
-                  />
-                </View>
-                
-                <View>
+                        <Text style={styles.title}>Dose Tipper</Text>
 
-                  <View style={styles.shiftInfoContainer}>
-                    <Text style={styles.shiftInfo}>Tips: ${this.props.enteredTips ? this.props.enteredTips : 0}</Text>
-                  </View>
+                        <View>
+                            <TextInput
+                                keyboardType={'number-pad'}
+                                autoFocus={true}
+                                placeholder={'Enter Total Tips'}
+                                clearTextOnFocus={true}          
+                                style={styles.enterTips} 
+                                fontSize={20}
+                                maxLength={40}
+                                onChangeText={(tips) => this.setState({enteredTips: tips})}
+                                value={this.state.enteredTips}/>
+                        </View>
+                        <Text style={styles.headings}>Select Shift</Text>      
 
-                  <View style={styles.shiftInfoContainer}>
-                    <Text style={styles.shiftInfo}>Shift: {this.props.selectedShift.shift}</Text>
-                  </View>
+                        <View style={styles.shiftListContainer}>        
+                            <FlatList
+                                style={styles.flatList}
+                                data={this.state.allShifts}
+                                keyExtractor={(item, index) => index}
+                                renderItem={(item) => this.renderShifts(item)}
+                                />
+                        </View>
 
-                  <View style={styles.shiftInfoContainer}>
-                    <Text style={styles.shiftInfo}>Shift Hours: {this.props.selectedShift.hours}</Text>        
-                  </View>
-                  
-                </View>
+                        <View style={styles.barbackContainer}>
+                            <CheckBox
+                                onPress={ this.toggleBarback.bind(this) }
+                                iconRight
+                                center
+                                checkedColor='#F7DC1B'
+                                title='Barback'
+                                checkedIcon='check'
+                                uncheckedIcon='circle-o'
+                                checked={this.state.barBackChecked}
+                                />
+                        </View>
+                            
+                        <View>
+
+                            <View style={styles.shiftInfoContainer}>
+                                <Text style={styles.shiftInfo}>Tips: ${this.state.enteredTips ? this.state.enteredTips : 0}</Text>
+                            </View>
+
+                            <View style={styles.shiftInfoContainer}>
+                                <Text style={styles.shiftInfo}>Shift: {this.state.selectedShift.shift}</Text>
+                            </View>
+
+                            <View style={styles.shiftInfoContainer}>
+                                <Text style={styles.shiftInfo}>Shift Hours: {this.state.selectedShift.hours}</Text>        
+                            </View>
+                        
+                        </View>
+                    </View>
+                </Col>
+
+                <Col style={styles.rightCol}>            
+
+                    <Tips 
+                        employees={this.state.employees}
+                        enteredTips={this.state.enteredTips}
+                        selectedShift={this.state.selectedShift}
+                        barBackChecked={this.state.barBackChecked}/>
+
+                </Col>
+
             </View>
         );
     }
