@@ -153,7 +153,8 @@ export default class App extends React.Component {
     renderTips = (item) => 
         <View style={styles.tipView}>
           <Text style={styles.tipEmp}>{item.item.emp}</Text>
-          <Text style={styles.tipTotal}>${item.item.tips ? item.item.tips : 0}</Text>
+          <Text style={styles.tipTotal}>${item.item.tips ? item.item.tips : 0}
+          </Text>
         </View>;
     
 
@@ -162,50 +163,64 @@ export default class App extends React.Component {
     return (
       <View style={styles.container}>
         
-        <Text style={styles.title}>Dose Tipper</Text>
-
-        <View>
-            <TextInput
-              keyboardType={'number-pad'}
-              autoFocus={true}
-              placeholder={'Enter Total Tips'}
-              clearTextOnFocus={true}          
-              style={styles.enterTips} 
-              fontSize={20}
-              maxLength={40}
-              onChangeText={(tips) => this.setState({enteredTips: tips})}
-              value={this.state.enteredTips}/>
-              
-        </View>
-
         <Grid style={styles.grid}>
-          <Col style={styles.leftCol}>
-            <Text style={styles.headings}>Select Shift</Text>      
+          <Col style={{width: 350}}>
+            <View style={styles.leftCol}>
 
-            <View style={styles.shiftListContainer}>        
-              <FlatList
-                style={styles.flatList}
-                data={this.state.allShifts}
-                keyExtractor={(item, index) => index}
-                renderItem={(item) => this.renderShifts(item)}
-                />
-            </View>
-            <View style={styles.barbackContainer}>
-              <CheckBox
-                onPress={ this.toggleBarback.bind(this) }
-                iconRight
-                center
-                checkedColor='#F7DC1B'
-                title='Barback'
-                checkedIcon='check'
-                uncheckedIcon='circle-o'
-                checked={this.state.barBackChecked}
-              />
-            </View>
+              <Text style={styles.title}>Dose Tipper</Text>
 
-            <View style={styles.shiftInfoContainer}>
-              <Text style={styles.shiftInfo}>Shift: {this.state.selectedShift.shift}</Text>
-              <Text style={styles.shiftInfo}>Shift Hours: {this.state.selectedShift.hours}</Text>        
+              <View>
+                  <TextInput
+                    keyboardType={'number-pad'}
+                    autoFocus={true}
+                    placeholder={'Enter Total Tips'}
+                    clearTextOnFocus={true}          
+                    style={styles.enterTips} 
+                    fontSize={20}
+                    maxLength={40}
+                    onChangeText={(tips) => this.setState({enteredTips: tips})}
+                    value={this.state.enteredTips}/>
+              </View>
+
+
+                <Text style={styles.headings}>Select Shift</Text>      
+
+                <View style={styles.shiftListContainer}>        
+                  <FlatList
+                    style={styles.flatList}
+                    data={this.state.allShifts}
+                    keyExtractor={(item, index) => index}
+                    renderItem={(item) => this.renderShifts(item)}
+                    />
+                </View>
+                <View style={styles.barbackContainer}>
+                  <CheckBox
+                    onPress={ this.toggleBarback.bind(this) }
+                    iconRight
+                    center
+                    checkedColor='#F7DC1B'
+                    title='Barback'
+                    checkedIcon='check'
+                    uncheckedIcon='circle-o'
+                    checked={this.state.barBackChecked}
+                  />
+                </View>
+                
+                <View>
+
+                  <View style={styles.shiftInfoContainer}>
+                    <Text style={styles.shiftInfo}>Tips: ${this.state.enteredTips ? this.state.enteredTips : 0}</Text>
+                  </View>
+
+                  <View style={styles.shiftInfoContainer}>
+                    <Text style={styles.shiftInfo}>Shift: {this.state.selectedShift.shift}</Text>
+                  </View>
+
+                  <View style={styles.shiftInfoContainer}>
+                    <Text style={styles.shiftInfo}>Shift Hours: {this.state.selectedShift.hours}</Text>        
+                  </View>
+                  
+                </View>
             </View>
 
           </Col>
@@ -228,23 +243,26 @@ export default class App extends React.Component {
 
             </View>
 
+            <View style={styles.bottomBtnsContainer}>
+
+              <TouchableOpacity
+                onPress={this.calculateTips.bind(this)}>
+                  <Text style={styles.calcTipsBtn}>Calculate Tips</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity 
+                onPress={this.clearAll}>
+                <Text style={styles.clearBtn}>Clear</Text>
+              </TouchableOpacity>
+
+            </View>
+
           </Col>
 
         </Grid>
 
-        <View style={styles.bottomBtnsContainer}>
-          <TouchableOpacity
-            onPress={this.calculateTips.bind(this)}>
-              <Text style={styles.calcTipsBtn}>Calculate Tips</Text>
-          </TouchableOpacity>
+        
 
-
-          <TouchableOpacity 
-            onPress={this.clearAll}>
-            <Text style={styles.clearBtn}>Clear</Text>
-          </TouchableOpacity>
-
-        </View>
       </View>
     );
   }
@@ -253,18 +271,16 @@ export default class App extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#7AB7E7',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: '#7dadd4',
   },
   grid: {
-    marginTop: 30,
+    marginTop: 80,
   },
   title: {
     fontSize: 50,
-    marginTop: 50,
     fontWeight: 'bold',
     color: '#fff',    
+    paddingLeft: 15,
   },
   shiftListContainer: {
     height: 250,
@@ -274,7 +290,8 @@ const styles = StyleSheet.create({
     padding: 5,
   },
   headings: {
-    marginTop: 10,
+    paddingLeft: 18,
+    paddingBottom: 10,
     fontSize: 25,
     color: '#192C47'
   },
@@ -287,18 +304,30 @@ const styles = StyleSheet.create({
   barbackContainer: {
     width: 200,
     padding: 5,
-    marginTop: 5,
-  },
-  leftCol: {
-    alignItems: 'center',
-    width: 40
   },
   rightCol: {
-    alignItems: 'center',
+    marginTop: 80,
+    paddingLeft: 15,
+    paddingRight: 40,
+    
+  },
+  leftCol: {
+    borderColor: '#6da6c7',
+    borderWidth: 1,
+    borderRadius: 5,
+    paddingTop: 40,
+    paddingBottom: 30,
+    backgroundColor: '#6da6c7',
+    shadowColor: '#4a4f52',
+    shadowOffset: { width: 1, height: 1 },
+    shadowRadius: 2,
+    shadowOpacity: .3,
   },
   shiftInfoContainer: {
-    alignItems: 'center',
-    marginTop: 10
+    paddingLeft: 15,
+    marginTop: 10,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
   shiftInfo: {
     color: '#0D6B7F'
@@ -306,38 +335,39 @@ const styles = StyleSheet.create({
   calcTipsBtn: {
     fontSize: 35,
     color: '#fff',
-    paddingBottom: 12,    
+    paddingBottom: 18,        
   },
   clearBtn: {
     fontSize: 20,
-    color: '#192C47'
+    color: '#192C47',
+    opacity: .9
   },
   bottomBtnsContainer: {
     alignItems: 'center',
-    padding: 30
+    marginTop: -70,
   },
   tipListContainer: {
     height: 500
   },
   tipTotal: {
     color: '#F7DC1B',
-    fontSize: 20,
+    fontSize: 22,
     fontWeight: 'bold'
   },
   tipView: {
     flexDirection: 'row',
     margin: 5,
-    marginLeft: 10,
-    marginRight: 10,
+    marginLeft: 35,
+    marginRight: 35,
     padding: 10,
     opacity: 1,
-    width: 300,    
-    borderBottomColor: '#fff',
-    borderBottomWidth: 1,    
+    borderBottomColor: '#c3d6e45e',
+    borderBottomWidth: 1.5,    
     justifyContent: 'space-between'
   },
   tipEmp: {
-    color: 'white'
+    color: 'white',
+    fontSize: 17
   },
 });
 
