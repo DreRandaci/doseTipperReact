@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
       padding: 5,
     },
     rightCol: {
-      marginTop: 80,
+      marginTop: 40,
       paddingLeft: 15,
       paddingRight: 40,
       
@@ -69,6 +69,7 @@ const styles = StyleSheet.create({
     calcTipsBtn: {
       fontSize: 35,
       color: '#fff',
+      paddingTop: 40,
       paddingBottom: 18,        
     },
     clearBtn: {
@@ -85,7 +86,7 @@ const styles = StyleSheet.create({
     },
     tipTotal: {
       color: '#F7DC1B',
-      fontSize: 22,
+      fontSize: 25,
       fontWeight: 'bold'
     },
     tipView: {

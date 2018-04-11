@@ -1,4 +1,3 @@
-// Creates a new note obj
 const assignTips = {
     assignTips: (employees, shiftValues) => {
         let tips = employees.map((val, i) => {
@@ -20,6 +19,9 @@ const assignTips = {
                     return val;
                 case 'K3':
                     val.tips = shiftValues.k3Tips;
+                    return val;
+                case 'K4':
+                    val.tips = 0;
                     return val;
                 break;
             }
