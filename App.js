@@ -153,7 +153,8 @@ export default class App extends React.Component {
     renderTips = (item) => 
         <View style={styles.tipView}>
           <Text style={styles.tipEmp}>{item.item.emp}</Text>
-          <Text style={styles.tipTotal}>${item.item.tips ? item.item.tips : 0}</Text>
+          <Text style={styles.tipTotal}>${item.item.tips ? item.item.tips : 0}
+          </Text>
         </View>;
     
 
@@ -270,7 +271,7 @@ export default class App extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#7AB7E7',
+    backgroundColor: '#7dadd4',
   },
   grid: {
     marginTop: 80,
@@ -289,7 +290,6 @@ const styles = StyleSheet.create({
     padding: 5,
   },
   headings: {
-    // marginTop: 10,
     paddingLeft: 18,
     paddingBottom: 10,
     fontSize: 25,
@@ -304,8 +304,6 @@ const styles = StyleSheet.create({
   barbackContainer: {
     width: 200,
     padding: 5,
-    // alignSelf: 'center',
-    
   },
   rightCol: {
     marginTop: 80,
@@ -314,25 +312,22 @@ const styles = StyleSheet.create({
     
   },
   leftCol: {
-    borderColor: '#6493ab',
+    borderColor: '#6da6c7',
     borderWidth: 1,
     borderRadius: 5,
-    // marginLeft: 10,
     paddingTop: 40,
     paddingBottom: 30,
     backgroundColor: '#6da6c7',
-    shadowColor: '#000',
+    shadowColor: '#4a4f52',
     shadowOffset: { width: 1, height: 1 },
     shadowRadius: 2,
     shadowOpacity: .3,
   },
   shiftInfoContainer: {
-    // alignItems: 'center',
     paddingLeft: 15,
     marginTop: 10,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    // alignItems: 'center',
   },
   shiftInfo: {
     color: '#0D6B7F'
@@ -349,7 +344,6 @@ const styles = StyleSheet.create({
   },
   bottomBtnsContainer: {
     alignItems: 'center',
-    // padding: 30
     marginTop: -70,
   },
   tipListContainer: {
@@ -363,13 +357,12 @@ const styles = StyleSheet.create({
   tipView: {
     flexDirection: 'row',
     margin: 5,
-    marginLeft: 10,
-    marginRight: 10,
+    marginLeft: 35,
+    marginRight: 35,
     padding: 10,
     opacity: 1,
-    // width: 300,    
-    borderBottomColor: '#fff',
-    borderBottomWidth: 1,    
+    borderBottomColor: '#c3d6e45e',
+    borderBottomWidth: 1.5,    
     justifyContent: 'space-between'
   },
   tipEmp: {
