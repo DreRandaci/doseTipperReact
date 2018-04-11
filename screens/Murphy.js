@@ -102,13 +102,13 @@ export default class Murphy extends React.Component {
         
         this.setState({
             employees: [
-                {emp: 'Barista', tips: shiftValues.baristaTips},
+                {emp: 'Barista', tips: shiftValues.baristaTips.toFixed(2)},
                 {emp: 'Cashier', tips: 0},
-                {emp: 'Barback', tips: shiftValues.bbTips > 0 ? shiftValues.bbTips : 0},
+                {emp: 'Barback', tips: shiftValues.bbTips > 0 ? shiftValues.bbTips.toFixed(2) : 0},
                 {emp: 'K1', tips: 0},
                 {emp: 'K2', tips: 0},
-                {emp: 'K3', tips: shiftValues.k3Tips},
-                {emp: 'K4', tips: shiftValues.k4Tips},
+                {emp: 'K3', tips: shiftValues.k3Tips.toFixed(2)},
+                {emp: 'K4', tips: shiftValues.k4Tips.toFixed(2)},
             ],
         });
 
