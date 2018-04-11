@@ -204,10 +204,21 @@ export default class App extends React.Component {
                     checked={this.state.barBackChecked}
                   />
                 </View>
+                
+                <View>
 
-                <View style={styles.shiftInfoContainer}>
-                  <Text style={styles.shiftInfo}>Shift: {this.state.selectedShift.shift}</Text>
-                  <Text style={styles.shiftInfo}>Shift Hours: {this.state.selectedShift.hours}</Text>        
+                  <View style={styles.shiftInfoContainer}>
+                    <Text style={styles.shiftInfo}>Tips: ${this.state.enteredTips ? this.state.enteredTips : 0}</Text>
+                  </View>
+
+                  <View style={styles.shiftInfoContainer}>
+                    <Text style={styles.shiftInfo}>Shift: {this.state.selectedShift.shift}</Text>
+                  </View>
+
+                  <View style={styles.shiftInfoContainer}>
+                    <Text style={styles.shiftInfo}>Shift Hours: {this.state.selectedShift.hours}</Text>        
+                  </View>
+                  
                 </View>
             </View>
 
@@ -231,23 +242,26 @@ export default class App extends React.Component {
 
             </View>
 
+            <View style={styles.bottomBtnsContainer}>
+
+              <TouchableOpacity
+                onPress={this.calculateTips.bind(this)}>
+                  <Text style={styles.calcTipsBtn}>Calculate Tips</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity 
+                onPress={this.clearAll}>
+                <Text style={styles.clearBtn}>Clear</Text>
+              </TouchableOpacity>
+
+            </View>
+
           </Col>
 
         </Grid>
 
-        <View style={styles.bottomBtnsContainer}>
-          <TouchableOpacity
-            onPress={this.calculateTips.bind(this)}>
-              <Text style={styles.calcTipsBtn}>Calculate Tips</Text>
-          </TouchableOpacity>
+        
 
-
-          <TouchableOpacity 
-            onPress={this.clearAll}>
-            <Text style={styles.clearBtn}>Clear</Text>
-          </TouchableOpacity>
-
-        </View>
       </View>
     );
   }
@@ -276,7 +290,7 @@ const styles = StyleSheet.create({
   },
   headings: {
     // marginTop: 10,
-    paddingLeft: 15,
+    paddingLeft: 18,
     paddingBottom: 10,
     fontSize: 25,
     color: '#192C47'
@@ -290,20 +304,35 @@ const styles = StyleSheet.create({
   barbackContainer: {
     width: 200,
     padding: 5,
+    // alignSelf: 'center',
+    
   },
   rightCol: {
-    marginTop: 50,
-    paddingLeft: 40,
-    paddingRight: 40,    
+    marginTop: 80,
+    paddingLeft: 15,
+    paddingRight: 40,
+    
   },
   leftCol: {
-    borderRightColor: 'white',
-    borderRightWidth: 1,
+    borderColor: '#6493ab',
+    borderWidth: 1,
+    borderRadius: 5,
+    // marginLeft: 10,
+    paddingTop: 40,
+    paddingBottom: 30,
+    backgroundColor: '#6da6c7',
+    shadowColor: '#000',
+    shadowOffset: { width: 1, height: 1 },
+    shadowRadius: 2,
+    shadowOpacity: .3,
   },
   shiftInfoContainer: {
     // alignItems: 'center',
     paddingLeft: 15,
-    marginTop: 10
+    marginTop: 10,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    // alignItems: 'center',
   },
   shiftInfo: {
     color: '#0D6B7F'
@@ -311,22 +340,24 @@ const styles = StyleSheet.create({
   calcTipsBtn: {
     fontSize: 35,
     color: '#fff',
-    paddingBottom: 12,    
+    paddingBottom: 18,        
   },
   clearBtn: {
     fontSize: 20,
-    color: '#192C47'
+    color: '#192C47',
+    opacity: .9
   },
   bottomBtnsContainer: {
     alignItems: 'center',
-    padding: 30
+    // padding: 30
+    marginTop: -70,
   },
   tipListContainer: {
     height: 500
   },
   tipTotal: {
     color: '#F7DC1B',
-    fontSize: 20,
+    fontSize: 22,
     fontWeight: 'bold'
   },
   tipView: {
@@ -342,7 +373,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between'
   },
   tipEmp: {
-    color: 'white'
+    color: 'white',
+    fontSize: 17
   },
 });
 
