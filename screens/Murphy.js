@@ -31,6 +31,7 @@ export default class Murphy extends React.Component {
           {emp: 'K1', tips: 0},
           {emp: 'K2', tips: 0},
           {emp: 'K3', tips: 0},
+          {emp: 'K4', tips: 0},
         ],
         selectedShift: {shift: '6am - 1pm', hours: 7, checked: true},
       };
@@ -51,6 +52,7 @@ export default class Murphy extends React.Component {
         {emp: 'K1', tips: 0},
         {emp: 'K2', tips: 0},
         {emp: 'K3', tips: 0},
+        {emp: 'K4', tips: 0},
       ],
       this.initialState.selectedShift = {}; 
       this.setState(this.initialState);
@@ -77,11 +79,49 @@ export default class Murphy extends React.Component {
       })
     }; 
 
-    // TODO: Add calculate2HrTips() 
+    calculate2HrTips = () => {
+        let shiftValues = {
+            bbTips: 0,
+            baristaTips: 0,
+            k3Tips: 0,
+            k4Tips: 0,
+            shiftHrs: this.state.selectedShift.hours,
+            enteredTips: this.state.enteredTips,
+            kitchenTips: this.state.enteredTips*0.2,
+        }
 
-    calculateTips() {
+        if(this.state.barBackChecked) {
+            shiftValues.bbTips = shiftValues.enteredTips*0.2;
+        }   
+
+        let k3k4tips = (shiftValues.enteredTips*0.2)/2;
+        
+        shiftValues.k3Tips = k3k4tips;
+        shiftValues.k4Tips = k3k4tips;
+        shiftValues.baristaTips = shiftValues.enteredTips-((k3k4tips*2)+shiftValues.bbTips);
+        
+        this.setState({
+            employees: [
+                {emp: 'Barista', tips: shiftValues.baristaTips.toFixed(2)},
+                {emp: 'Cashier', tips: 0},
+                {emp: 'Barback', tips: shiftValues.bbTips > 0 ? shiftValues.bbTips.toFixed(2) : 0},
+                {emp: 'K1', tips: 0},
+                {emp: 'K2', tips: 0},
+                {emp: 'K3', tips: shiftValues.k3Tips.toFixed(2)},
+                {emp: 'K4', tips: shiftValues.k4Tips.toFixed(2)},
+            ],
+        });
+
+    } 
+
+    calculateTips = () => {
       if(this.state.enteredTips > 0 && this.state.selectedShift.hours > 0) {
         
+        if(this.state.selectedShift.hours === 2) {
+            this.calculate2HrTips();
+            return;
+        }
+
         let shiftValues = {
             bbTips: 0,
             bariAndCashiTips: 0,
@@ -96,12 +136,12 @@ export default class Murphy extends React.Component {
         
         // Calculates bar back tips 
         if(this.state.barBackChecked) {
-          shiftValues.bbTips = this.state.enteredTips*0.2;
+          shiftValues.bbTips = shiftValues.enteredTips*0.2;
           shiftValues.enteredTips -= shiftValues.bbTips;
         }        
 
         // Calculates barista and cashier tips
-        shiftValues.bariAndCashiTips = (this.state.enteredTips-shiftValues.kitchenTips)/2;
+        shiftValues.bariAndCashiTips = (shiftValues.enteredTips-shiftValues.kitchenTips)/2;
 
         // Calculates average kitchen tips per hour
         shiftValues.kitchenTipsPerHr = shiftValues.kitchenTips/shiftValues.shiftHrs;
