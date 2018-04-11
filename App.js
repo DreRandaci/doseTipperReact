@@ -253,7 +253,6 @@ export default class App extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // backgroundColor: '#70a9ca9e',
     backgroundColor: '#7AB7E7',
     alignItems: 'center',
     justifyContent: 'center',
@@ -292,8 +291,7 @@ const styles = StyleSheet.create({
   },
   leftCol: {
     alignItems: 'center',
-    borderRightColor: 'white',
-    borderRightWidth: 1,
+    width: 40
   },
   rightCol: {
     alignItems: 'center',
