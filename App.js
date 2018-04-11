@@ -140,20 +140,20 @@ export default class App extends React.Component {
 
     renderShifts = (item) =>
         <CheckBox
-          size={30}
           checked={item.item.checked}
           onPress={this.selectShift.bind(this, item)}
           iconRight
           center
-          checkedColor='gold'
+          checkedColor='#F7DC1B'
           title={item.item.shift}
           checkedIcon='check'
           uncheckedIcon='circle-o'          
           />;
           
     renderTips = (item) => 
-        <View>
-          <Text>{item.item.emp}: ${item.item.tips}</Text>
+        <View style={styles.tipView}>
+          <Text style={styles.tipEmp}>{item.item.emp}</Text>
+          <Text style={styles.tipTotal}>${item.item.tips ? item.item.tips : 0}</Text>
         </View>;
     
 
@@ -162,27 +162,27 @@ export default class App extends React.Component {
     return (
       <View style={styles.container}>
         
-        <Text style={styles.heading}>Dose Tipper</Text>
+        <Text style={styles.title}>Dose Tipper</Text>
+
+        <View>
+            <TextInput
+              keyboardType={'number-pad'}
+              autoFocus={true}
+              placeholder={'Enter Total Tips'}
+              clearTextOnFocus={true}          
+              style={styles.enterTips} 
+              fontSize={20}
+              maxLength={40}
+              onChangeText={(tips) => this.setState({enteredTips: tips})}
+              value={this.state.enteredTips}/>
+              
+        </View>
 
         <Grid style={styles.grid}>
           <Col style={styles.leftCol}>
-            <View>
-              <TextInput
-                keyboardType={'number-pad'}
-                autoFocus={true}
-                placeholder={'Enter Total Tips'}
-                clearTextOnFocus={true}          
-                style={styles.enterTips} 
-                fontSize={20}
-                maxLength={40}
-                onChangeText={(tips) => this.setState({enteredTips: tips})}
-                value={this.state.enteredTips}/>
-              
-            </View>
+            <Text style={styles.headings}>Select Shift</Text>      
 
-            <Text style={styles.shifts}>Select Shift</Text>      
-
-            <View style={styles.listContainer}>        
+            <View style={styles.shiftListContainer}>        
               <FlatList
                 style={styles.flatList}
                 data={this.state.allShifts}
@@ -195,40 +195,38 @@ export default class App extends React.Component {
                 onPress={ this.toggleBarback.bind(this) }
                 iconRight
                 center
-                checkedColor='gold'
+                checkedColor='#F7DC1B'
                 title='Barback'
                 checkedIcon='check'
                 uncheckedIcon='circle-o'
                 checked={this.state.barBackChecked}
               />
             </View>
+
+            <View style={styles.shiftInfoContainer}>
+              <Text style={styles.shiftInfo}>Shift: {this.state.selectedShift.shift}</Text>
+              <Text style={styles.shiftInfo}>Shift Hours: {this.state.selectedShift.hours}</Text>        
+            </View>
+
           </Col>
 
           <Col style={styles.rightCol}>            
 
-            <Row style={{marginTop: 60}}>
-              <View>
-                <Text style={styles.shifts}>Tips</Text>
+            <Text style={styles.headings}>Tips</Text>
 
-                <View style={styles.listContainer}>
-                  <FlatList 
-                    style={styles.flatList}
-                    data={this.state.employees}
-                    keyExtractor={(item, index) => index}
-                    renderItem={(item) => this.renderTips(item)}
-                  />              
-                                
-                </View>
+            <View>
 
+              <View style={styles.tipListContainer}>
+                <FlatList 
+                  style={styles.flatList}
+                  data={this.state.employees}
+                  keyExtractor={(item, index) => index}
+                  renderItem={(item) => this.renderTips(item)}
+                />              
+                              
               </View>
-            </Row>
 
-            <Row style={{marginTop: 200}}>
-              <View>
-                <Text style={styles.shiftInfo}>Shift: {this.state.selectedShift.shift}</Text>
-                <Text style={styles.shiftInfo}>Shift Hours: {this.state.selectedShift.hours}</Text>        
-              </View>
-            </Row>
+            </View>
 
           </Col>
 
@@ -255,29 +253,30 @@ export default class App extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#70a9ca9e',
+    backgroundColor: '#7AB7E7',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   grid: {
     marginTop: 30,
   },
-  heading: {
+  title: {
     fontSize: 50,
     marginTop: 50,
     fontWeight: 'bold',
     color: '#fff',    
   },
-  listContainer: {
+  shiftListContainer: {
     height: 250,
     flexDirection: 'row',
   },
   flatList: {
     padding: 5,
   },
-  shifts: {
+  headings: {
     marginTop: 10,
     fontSize: 25,
+    color: '#192C47'
   },
   listShift: {
     fontSize: 25
@@ -292,25 +291,54 @@ const styles = StyleSheet.create({
   },
   leftCol: {
     alignItems: 'center',
+    width: 40
   },
   rightCol: {
     alignItems: 'center',
-    justifyContent: 'center'
+  },
+  shiftInfoContainer: {
+    alignItems: 'center',
+    marginTop: 10
   },
   shiftInfo: {
+    color: '#0D6B7F'
   },
   calcTipsBtn: {
     fontSize: 35,
     color: '#fff',
-    paddingBottom: 12
+    paddingBottom: 12,    
   },
   clearBtn: {
     fontSize: 20,
+    color: '#192C47'
   },
   bottomBtnsContainer: {
     alignItems: 'center',
     padding: 30
-  }
+  },
+  tipListContainer: {
+    height: 500
+  },
+  tipTotal: {
+    color: '#F7DC1B',
+    fontSize: 20,
+    fontWeight: 'bold'
+  },
+  tipView: {
+    flexDirection: 'row',
+    margin: 5,
+    marginLeft: 10,
+    marginRight: 10,
+    padding: 10,
+    opacity: 1,
+    width: 300,    
+    borderBottomColor: '#fff',
+    borderBottomWidth: 1,    
+    justifyContent: 'space-between'
+  },
+  tipEmp: {
+    color: 'white'
+  },
 });
 
 // Disables yellowbox warnings
