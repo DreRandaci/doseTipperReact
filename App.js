@@ -162,50 +162,53 @@ export default class App extends React.Component {
     return (
       <View style={styles.container}>
         
-        <Text style={styles.title}>Dose Tipper</Text>
-
-        <View>
-            <TextInput
-              keyboardType={'number-pad'}
-              autoFocus={true}
-              placeholder={'Enter Total Tips'}
-              clearTextOnFocus={true}          
-              style={styles.enterTips} 
-              fontSize={20}
-              maxLength={40}
-              onChangeText={(tips) => this.setState({enteredTips: tips})}
-              value={this.state.enteredTips}/>
-              
-        </View>
-
         <Grid style={styles.grid}>
-          <Col style={styles.leftCol}>
-            <Text style={styles.headings}>Select Shift</Text>      
+          <Col style={{width: 350}}>
+            <View style={styles.leftCol}>
 
-            <View style={styles.shiftListContainer}>        
-              <FlatList
-                style={styles.flatList}
-                data={this.state.allShifts}
-                keyExtractor={(item, index) => index}
-                renderItem={(item) => this.renderShifts(item)}
-                />
-            </View>
-            <View style={styles.barbackContainer}>
-              <CheckBox
-                onPress={ this.toggleBarback.bind(this) }
-                iconRight
-                center
-                checkedColor='#F7DC1B'
-                title='Barback'
-                checkedIcon='check'
-                uncheckedIcon='circle-o'
-                checked={this.state.barBackChecked}
-              />
-            </View>
+              <Text style={styles.title}>Dose Tipper</Text>
 
-            <View style={styles.shiftInfoContainer}>
-              <Text style={styles.shiftInfo}>Shift: {this.state.selectedShift.shift}</Text>
-              <Text style={styles.shiftInfo}>Shift Hours: {this.state.selectedShift.hours}</Text>        
+              <View>
+                  <TextInput
+                    keyboardType={'number-pad'}
+                    autoFocus={true}
+                    placeholder={'Enter Total Tips'}
+                    clearTextOnFocus={true}          
+                    style={styles.enterTips} 
+                    fontSize={20}
+                    maxLength={40}
+                    onChangeText={(tips) => this.setState({enteredTips: tips})}
+                    value={this.state.enteredTips}/>
+              </View>
+
+
+                <Text style={styles.headings}>Select Shift</Text>      
+
+                <View style={styles.shiftListContainer}>        
+                  <FlatList
+                    style={styles.flatList}
+                    data={this.state.allShifts}
+                    keyExtractor={(item, index) => index}
+                    renderItem={(item) => this.renderShifts(item)}
+                    />
+                </View>
+                <View style={styles.barbackContainer}>
+                  <CheckBox
+                    onPress={ this.toggleBarback.bind(this) }
+                    iconRight
+                    center
+                    checkedColor='#F7DC1B'
+                    title='Barback'
+                    checkedIcon='check'
+                    uncheckedIcon='circle-o'
+                    checked={this.state.barBackChecked}
+                  />
+                </View>
+
+                <View style={styles.shiftInfoContainer}>
+                  <Text style={styles.shiftInfo}>Shift: {this.state.selectedShift.shift}</Text>
+                  <Text style={styles.shiftInfo}>Shift Hours: {this.state.selectedShift.hours}</Text>        
+                </View>
             </View>
 
           </Col>
@@ -254,17 +257,15 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#7AB7E7',
-    alignItems: 'center',
-    justifyContent: 'center',
   },
   grid: {
-    marginTop: 30,
+    marginTop: 80,
   },
   title: {
     fontSize: 50,
-    marginTop: 50,
     fontWeight: 'bold',
     color: '#fff',    
+    paddingLeft: 15,
   },
   shiftListContainer: {
     height: 250,
@@ -274,7 +275,9 @@ const styles = StyleSheet.create({
     padding: 5,
   },
   headings: {
-    marginTop: 10,
+    // marginTop: 10,
+    paddingLeft: 15,
+    paddingBottom: 10,
     fontSize: 25,
     color: '#192C47'
   },
@@ -287,17 +290,19 @@ const styles = StyleSheet.create({
   barbackContainer: {
     width: 200,
     padding: 5,
-    marginTop: 5,
-  },
-  leftCol: {
-    alignItems: 'center',
-    width: 40
   },
   rightCol: {
-    alignItems: 'center',
+    marginTop: 50,
+    paddingLeft: 40,
+    paddingRight: 40,    
+  },
+  leftCol: {
+    borderRightColor: 'white',
+    borderRightWidth: 1,
   },
   shiftInfoContainer: {
-    alignItems: 'center',
+    // alignItems: 'center',
+    paddingLeft: 15,
     marginTop: 10
   },
   shiftInfo: {
@@ -331,7 +336,7 @@ const styles = StyleSheet.create({
     marginRight: 10,
     padding: 10,
     opacity: 1,
-    width: 300,    
+    // width: 300,    
     borderBottomColor: '#fff',
     borderBottomWidth: 1,    
     justifyContent: 'space-between'
