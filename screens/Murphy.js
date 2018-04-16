@@ -63,7 +63,7 @@ export default class Murphy extends React.Component {
       this.setState({barBackChecked: !this.state.barBackChecked});
 
     selectShift = (shift) => {
-        // checks if the shift is 2 or 4 hours and, if so, removes barback tip potential completely 
+        // checks if the shift is 4 hours and, if so, removes barback tip potential completely 
         if(shift.item.hours === 4) {
             this.setState({barBackDisabled: true, barBackChecked: false});
         } else {
@@ -71,13 +71,13 @@ export default class Murphy extends React.Component {
         }
 
         shift.item.checked = !shift.item.checked;
-        // loop over allShifts and update checked vals
+        // loop over allShifts and toggle checks for each shift
         let newShifts = this.state.allShifts.map((val,i) => {
+            // if the shift is the pressed shift, change selected value of pressed entry
             if (shift.index === i) {
-                // change selected value of pressed entry
                 return { ...val }; 
             }
-            // otherwise, uncheck the item and return current value
+            // otherwise, uncheck the item and return current shift
             val.checked = false;
             return val;
         });
