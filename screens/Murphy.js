@@ -35,40 +35,40 @@ export default class Murphy extends React.Component {
           {emp: 'K4', tips: 0},
         ],
         selectedShift: {shift: '6am - 1pm', hours: 7, checked: true},
-      };
-      this.initialState = this.state;
+      };      
     }
 
     clearAll = () => {
-      this.initialState.allShifts = [
-        {shift: '6am - 1pm', hours: 7, checked: false},
-        {shift: '7am - 1pm', hours: 6, checked: false},
-        {shift: '1pm - 3pm', hours: 2, checked: false},
-        {shift: '3pm - 7pm', hours: 4, checked: false},
-      ];
-      this.initialState.employees = [
-        {emp: 'Barista', tips: 0},
-        {emp: 'Cashier', tips: 0},
-        {emp: 'Barback', tips: 0},
-        {emp: 'K1', tips: 0},
-        {emp: 'K2', tips: 0},
-        {emp: 'K3', tips: 0},
-        {emp: 'K4', tips: 0},
-      ],
-      this.initialState.selectedShift = {}; 
-      this.setState(this.initialState);
+        this.setState({
+            allShifts: [
+                {shift: '6am - 1pm', hours: 7, checked: false},
+                {shift: '7am - 1pm', hours: 6, checked: false},
+                {shift: '1pm - 3pm', hours: 2, checked: false},
+                {shift: '3pm - 7pm', hours: 4, checked: false},
+            ],
+            employees: [
+                {emp: 'Barista', tips: 0},
+                {emp: 'Cashier', tips: 0},
+                {emp: 'Barback', tips: 0},
+                {emp: 'K1', tips: 0},
+                {emp: 'K2', tips: 0},
+                {emp: 'K3', tips: 0},
+                {emp: 'K4', tips: 0},
+            ],
+            selectedShift: {}
+        });
     };
   
     toggleBarback = () => 
       this.setState({barBackChecked: !this.state.barBackChecked});
 
     selectShift = (shift) => {
-        if(shift.item.hours === 2 || shift.item.hours === 4) {
-            this.setState({barBackDisabled: true});
+        // checks if the shift is 2 or 4 hours and, if so, removes barback tip potential completely 
+        if(shift.item.hours === 4) {
+            this.setState({barBackDisabled: true, barBackChecked: false});
         } else {
-            this.setState({barBackChecked: false});
+            this.setState({barBackDisabled: false});
         }
-
 
         shift.item.checked = !shift.item.checked;
         // loop over allShifts and update checked vals
@@ -222,7 +222,7 @@ export default class Murphy extends React.Component {
             
             <Grid style={styles.grid}>
             
-                {/* Inline width styling because of bug in React Native Easy Grid library */}
+                {/* Inline width styling because of bug in React Native Easy Grid library. Because of that, all styles for the left column have to live in the view element */}
                 <Col style={{width: 350}}>
                     <View style={styles.leftCol}>
 
