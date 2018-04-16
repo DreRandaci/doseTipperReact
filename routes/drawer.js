@@ -18,7 +18,7 @@ const Drawer = DrawerNavigator(
         // },
     },
     {
-        initialRouteName: 'Murphy',
+        initialRouteName: 'Riverside',
         drawerPosition: 'right',
         drawerBackgroundColor: '#6da6c7', 
         contentOptions: {
