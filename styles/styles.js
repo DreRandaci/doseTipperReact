@@ -80,7 +80,10 @@ const styles = StyleSheet.create({
       fontSize: 35,
       color: '#fff',
       paddingTop: 40,
-      paddingBottom: 18,          
+      paddingBottom: 18,
+      shadowOffset: { width: 1, height: 1 },
+      shadowRadius: 2,
+      shadowOpacity: .2,          
     },
     clearBtn: {
       fontSize: 20,
@@ -89,10 +92,7 @@ const styles = StyleSheet.create({
     },
     bottomBtnsContainer: {
       alignItems: 'center',
-      marginTop: -70,
-      shadowOffset: { width: 1, height: 1 },
-      shadowRadius: 2,
-      shadowOpacity: .2,    
+      marginTop: -70,          
     },
     tipListContainer: {
       height: 500
