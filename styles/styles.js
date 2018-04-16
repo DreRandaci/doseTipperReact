@@ -36,6 +36,10 @@ const styles = StyleSheet.create({
     barbackContainer: {
       width: 200,
       padding: 5,
+      shadowColor: '#4a4f52',
+      shadowOffset: { width: 1, height: 3 },
+      shadowRadius: 2,
+      shadowOpacity: .3,
     },
     rightCol: {
       marginTop: 40,
@@ -47,14 +51,14 @@ const styles = StyleSheet.create({
       borderColor: '#6da6c7',
       borderWidth: 1,
       borderRadius: 5,
-      paddingTop: 40,
-      paddingBottom: 30,
+      paddingTop: 20,
+      paddingBottom: 20,
       paddingLeft: 10,
       paddingRight: 10,
-      backgroundColor: '#6da6c7',
+      backgroundColor: '#68a7cc',
       shadowColor: '#4a4f52',
-      shadowOffset: { width: 1, height: 1 },
-      shadowRadius: 2,
+      shadowOffset: { width: 1, height: 2 },
+      shadowRadius: 3,
       shadowOpacity: .3,
     },
     shiftInfoContainer: {
@@ -66,11 +70,20 @@ const styles = StyleSheet.create({
     shiftInfo: {
       color: '#0D6B7F'
     },
+    shiftBtn: {
+      shadowColor: '#4a4f52',
+      shadowOffset: { width: 1, height: 3 },
+      shadowRadius: 2,
+      shadowOpacity: .3,
+    },
     calcTipsBtn: {
       fontSize: 35,
       color: '#fff',
       paddingTop: 40,
-      paddingBottom: 18,        
+      paddingBottom: 18,
+      shadowOffset: { width: 1, height: 1 },
+      shadowRadius: 2,
+      shadowOpacity: .2,          
     },
     clearBtn: {
       fontSize: 20,
@@ -79,7 +92,7 @@ const styles = StyleSheet.create({
     },
     bottomBtnsContainer: {
       alignItems: 'center',
-      marginTop: -70,
+      marginTop: -70,          
     },
     tipListContainer: {
       height: 500
