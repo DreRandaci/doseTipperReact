@@ -1,7 +1,7 @@
 import React from 'react';
-import {  
-    View, } from 'react-native';
+import { Button, View, } from 'react-native';
 import Murphy from './screens/Murphy';
+import Drawer from './routes/drawer';
 
 export default class App extends React.Component {
 
@@ -9,7 +9,7 @@ export default class App extends React.Component {
 
     return (
       <View style={{flex: 1}}>
-        <Murphy />
+        <Drawer />
       </View>
     );
   }

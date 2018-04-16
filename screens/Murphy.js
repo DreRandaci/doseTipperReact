@@ -11,8 +11,13 @@ import RenderTips from '../components/renderTips';
 import assignTips from '../methods/assignTips';
 import { Button, CheckBox } from 'react-native-elements';
 import { Col, Grid } from 'react-native-easy-grid';
+import { Header, Content, Container, Icon, Right } from 'native-base';
 
 export default class Murphy extends React.Component {
+    static navigationOptions = {
+        drawerLabel: 'Murphy',         
+    };
+
     constructor(props) {
       super(props);      
       this.state = {        
@@ -219,9 +224,15 @@ export default class Murphy extends React.Component {
 
         return (
         <View style={styles.container}>
-            
-            <Grid style={styles.grid}>
-            
+            <Header>
+                <Right>
+                    <Icon 
+                        name='ios-menu'
+                        onPress={() => this.props.navigation.navigate('DrawerOpen')}
+                    />
+                </Right>
+            </Header>
+            <Grid style={styles.grid}>        
                 {/* Inline width styling because of bug in React Native Easy Grid library. Because of that, all styles for the left column have to live in the view element */}
                 <Col style={{width: 350}}>
                     <View style={styles.leftCol}>
