@@ -6,7 +6,7 @@ const styles = StyleSheet.create({
       backgroundColor: '#7dadd4',
     },
     grid: {
-      marginTop: 80,
+      marginTop: 20,
     },
     title: {
       fontSize: 50,
