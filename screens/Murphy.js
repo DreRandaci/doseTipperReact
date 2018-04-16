@@ -64,7 +64,7 @@ export default class Murphy extends React.Component {
 
     selectShift = (shift) => {
         if(shift.item.hours === 2 || shift.item.hours === 4) {
-            this.setState({barBackDisabled: true, barBackChecked: true});
+            this.setState({barBackDisabled: true});
         } else {
             this.setState({barBackChecked: false});
         }
@@ -221,6 +221,7 @@ export default class Murphy extends React.Component {
         <View style={styles.container}>
             
             <Grid style={styles.grid}>
+                {/* Inline width styling because of bug in React Native Easy Grid library */}
                 <Col style={{width: 350}}>
                     <View style={styles.leftCol}>
 
@@ -250,14 +251,17 @@ export default class Murphy extends React.Component {
                                 />
                         </View>
 
-                        <View style={styles.barbackContainer}>
+                        <View 
+                            style={styles.barbackContainer}
+                            pointerEvents={this.state.barBackDisabled ? 'none' : ''}>
+
                             <CheckBox
                                 onPress={ this.toggleBarback.bind(this) }
                                 iconRight
                                 center
-                                checkedColor={this.state.barBackDisabled ? 'black' :'#F7DC1B'}
+                                checkedColor='#F7DC1B'
                                 title='Barback'
-                                checkedIcon={this.state.barBackDisabled ? 'close': 'check'}
+                                checkedIcon='check'
                                 uncheckedIcon='circle-o'
                                 checked={this.state.barBackChecked}
                             />
