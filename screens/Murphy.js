@@ -221,6 +221,7 @@ export default class Murphy extends React.Component {
         <View style={styles.container}>
             
             <Grid style={styles.grid}>
+            
                 {/* Inline width styling because of bug in React Native Easy Grid library */}
                 <Col style={{width: 350}}>
                     <View style={styles.leftCol}>
