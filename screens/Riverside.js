@@ -57,31 +57,22 @@ export default class Riverside extends React.Component {
                         autoFocus={true}
                         placeholder={'Enter Total Tips'}
                         clearTextOnFocus={true}          
-                        // style={styles.enterTips} 
                         fontSize={20}
                         maxLength={40}
                         onChangeText={(tips) => this.setState({enteredTips: tips})}
                         value={this.state.enteredTips}/>
                 </View>
 
-                <View style={{justifyContent: 'center', alignItems: 'center'}}>
+                <View style={{justifyContent: 'center', alignItems: 'center', paddingBottom: 50}}>
                     <TextInput
                         keyboardType={'number-pad'}
                         autoFocus={true}
                         placeholder={'Enter Number of Employees'}
                         clearTextOnFocus={true}          
-                        // style={styles.enterTips} 
                         fontSize={20}
                         maxLength={40}
                         onChangeText={(tips) => this.setState({empOnShift: tips})}
                         value={this.state.empOnShift}/>
-                </View>
-
-                <View style={{justifyContent: 'center', alignItems: 'center'}}>
-                    <TouchableOpacity
-                        onPress={this.calculateTips.bind(this)}>
-                        <Text style={styles.calcTipsBtn}>Calculate Tips</Text>
-                    </TouchableOpacity>
                 </View>
 
                 <View style={styles.tipView}>
@@ -90,6 +81,12 @@ export default class Riverside extends React.Component {
                     </Text>
                 </View>
 
+                <View style={{justifyContent: 'center', alignItems: 'center', paddingTop: 100}}>
+                    <TouchableOpacity
+                        onPress={this.calculateTips.bind(this)}>
+                        <Text style={styles.calcTipsBtn}>Calculate Tips</Text>
+                    </TouchableOpacity>
+                </View>
 
             </View>
         );
