@@ -1,6 +1,7 @@
 import { DrawerNavigator } from 'react-navigation';
 import Murphy from '../screens/Murphy';
 import Riverside from '../screens/Riverside';
+import SetDefaultStore from '../screens/SetDefaultStore';
 import styles from '../styles/styles';
 
 const Drawer = DrawerNavigator(
@@ -11,14 +12,12 @@ const Drawer = DrawerNavigator(
         Riverside: {
             screen: Riverside,
         },
-
-        // TODO:
-        // SetDefaultStore: {
-        //     screen: SetDefaultStore
-        // },
+        SetDefaultStore: {
+            screen: SetDefaultStore
+        },
     },
     {
-        initialRouteName: 'Riverside',
+        initialRouteName: 'SetDefaultStore',
         drawerPosition: 'right',
         drawerBackgroundColor: '#6da6c7', 
         contentOptions: {
