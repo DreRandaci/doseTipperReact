@@ -11,7 +11,7 @@ import RenderTips from '../components/renderTips';
 import assignTips from '../methods/assignTips';
 import { Button, CheckBox } from 'react-native-elements';
 import { Col, Grid } from 'react-native-easy-grid';
-import { Header, Content, Container, Icon, Right } from 'native-base';
+import { Header, Icon, Right } from 'native-base';
 
 export default class Murphy extends React.Component {
     static navigationOptions = {
