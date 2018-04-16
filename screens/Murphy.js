@@ -11,7 +11,7 @@ import RenderTips from '../components/renderTips';
 import assignTips from '../methods/assignTips';
 import { Button, CheckBox } from 'react-native-elements';
 import { Col, Grid } from 'react-native-easy-grid';
-import { Header, Icon, Right } from 'native-base';
+import { Header, Icon, Right, Body, Title, Left } from 'native-base';
 
 export default class Murphy extends React.Component {
     static navigationOptions = {
@@ -223,8 +223,12 @@ export default class Murphy extends React.Component {
     render() {
 
         return (
-        <View style={styles.container}>
-            <Header style={{backgroundColor:'#7dadd4'}}>
+        <View style={styles.container}>        
+            <Header style={{backgroundColor:'#7dadd4'}}>     
+                <Left/>   
+                <Body>
+                    <Title>Murphy</Title>
+                </Body>
                 <Right>
                     <Icon 
                         name='ios-menu'
