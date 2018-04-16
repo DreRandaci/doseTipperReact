@@ -224,7 +224,7 @@ export default class Murphy extends React.Component {
 
         return (
         <View style={styles.container}>
-            <Header>
+            <Header style={{backgroundColor:'#7dadd4'}}>
                 <Right>
                     <Icon 
                         name='ios-menu'

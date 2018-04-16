@@ -24,8 +24,8 @@ export default class Riverside extends React.Component {
 
     render() {
         return(
-            <View>
-                <Header>
+            <View style={styles.container}>
+                <Header style={{backgroundColor:'#7dadd4'}}>
                 <Right>
                     <Icon 
                         name='ios-menu'
@@ -33,7 +33,7 @@ export default class Riverside extends React.Component {
                     />
                 </Right>
             </Header>
-                <Text>HEY MFER!!!!!!!</Text>
+                
             </View>
         );
     }
