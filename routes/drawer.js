@@ -19,11 +19,9 @@ const Drawer = DrawerNavigator(
     {
         initialRouteName: 'SetDefaultStore',
         drawerPosition: 'right',
-        drawerBackgroundColor: '#6da6c7', 
         contentOptions: {
-            activeTintColor: 'white',
             inactiveTintColor: '#0D6B7F'
-        }       
+        }
     }
 );
 

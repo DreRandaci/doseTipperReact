@@ -1,6 +1,6 @@
 import React from 'react';
-import { 
-    Text, 
+import {
+    Text,
     View,
     TextInput,
     TouchableOpacity,
@@ -14,36 +14,54 @@ export default class Riverside extends React.Component {
     static navigationOptions = {
         drawerLabel: 'Set Default Store',
     };
-    
+
     constructor(props) {
-        super(props);      
+        super(props);
         this.state = {
             murphyChecked: false,
             riversideChecked: false,
-            store: ''           
+            store: ''
         }
     }
 
     componentDidMount() {
-        AsyncStorage.setItem('storePreference', JSON.stringify({store: 'HEY'}));
-        AsyncStorage.getItem('storePreference').then((res) => {
-            // If there is a preference, update the state
+        AsyncStorage.getItem('storePreference')
+        .then((res) => {
             if (res !== null) {
+                res.json();
+            } else {
+                return;
+            }
+        }).then((r) => {
+            // If there is a preference, update the state
+            if (r !== null) {
                 this.setState({store: JSON.parse(res.store)});
-            } 
-        });
+            }
+        })
     };
 
-    selectStore = (store) => {        
-        store == 'murphy' 
-            ? this.setState({murphyChecked: true, riversideChecked: false, store: store}) 
+    selectStore = (store) => {
+        store == 'murphy'
+            ? this.setState({murphyChecked: true, riversideChecked: false, store: store})
             : this.setState({riversideChecked: true, murphyChecked: false, store: store});
-            AsyncStorage.setItem('storePreference', JSON.stringify(this.state.store))        
+            AsyncStorage.setItem('storePreference', JSON.stringify(this.state.store))
     };
 
     render() {
         return(
             <View>
+                <Header style={{backgroundColor:'#7dadd4'}}>
+                    <Left/>
+                    <Body>
+                        <Title>Store Preferences</Title>
+                    </Body>
+                    <Right>
+                        <Icon
+                            name='ios-menu'
+                            onPress={() => this.props.navigation.navigate('DrawerOpen')}
+                        />
+                    </Right>
+                </Header>
                 <CheckBox
                     checked={this.state.murphyChecked}
                     onPress={this.selectStore.bind(this, 'murphy')}
@@ -52,10 +70,10 @@ export default class Riverside extends React.Component {
                     checkedColor='#F7DC1B'
                     title='Murphy'
                     checkedIcon='check'
-                    uncheckedIcon='circle-o'   
+                    uncheckedIcon='circle-o'
                     />
-                    
-                    <CheckBox
+
+                <CheckBox
                     checked={this.state.riversideChecked}
                     onPress={this.selectStore.bind(this, 'riverside')}
                     iconRight
@@ -63,9 +81,9 @@ export default class Riverside extends React.Component {
                     checkedColor='#F7DC1B'
                     title='Riverside'
                     checkedIcon='check'
-                    uncheckedIcon='circle-o'   
+                    uncheckedIcon='circle-o'
                     />
-                    <Text>Store: {this.state.store}</Text>
+                <Text>Store: {this.state.store}</Text>
             </View>
         );
     }
