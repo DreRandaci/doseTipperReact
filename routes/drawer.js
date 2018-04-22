@@ -11,20 +11,15 @@ const Drawer = DrawerNavigator(
         Riverside: {
             screen: Riverside,
         },
-
-        // TODO:
-        // SetDefaultStore: {
-        //     screen: SetDefaultStore
-        // },
     },
     {
-        initialRouteName: 'Riverside',
+        initialRouteName: 'Murphy',
         drawerPosition: 'right',
-        drawerBackgroundColor: '#6da6c7', 
+        drawerBackgroundColor: '#6da6c7',
         contentOptions: {
             activeTintColor: 'white',
             inactiveTintColor: '#0D6B7F'
-        }       
+        }
     }
 );
 
